@@ -276,6 +276,25 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 .scores small { color: var(--muted); }
 .stat { min-width: 0; } .stat b { white-space: nowrap; }
 .face.stone { background: var(--c2) repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 5px, transparent 5px 10px) !important; box-shadow: inset 0 0 0 .5cqw rgba(0,0,0,.25); }
+
+.tabs button { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 0.7rem; padding: 6px 2px; }
+.tabs svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sh { margin: 6px 2px -4px; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.chips.two { grid-template-columns: repeat(2, 1fr); }
+.tl { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.tl li { background: var(--panel); border-radius: 14px; padding: 10px 14px; display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; align-items: center; font-weight: 600; font-size: .9rem; }
+.tl li .bar { grid-column: 1 / -1; } .tl small { color: var(--muted); font-weight: 600; } .tl li.ok small { color: #1fa971; }
+.acct { display: flex; gap: 12px; align-items: center; background: var(--panel); border-radius: 14px; padding: 12px 14px; }
+.acct b { display: block; } .acct small { display: block; color: var(--muted); font-size: .78rem; font-weight: 500; margin-top: 2px; }
+.av { width: 42px; height: 42px; border-radius: 50%; background: var(--panel2); display: grid; place-items: center; overflow: hidden; flex: none; font-size: 1.2rem; }
+.av img { width: 100%; height: 100%; object-fit: cover; }
+.row input { width: 52%; min-width: 0; border: 0; border-radius: 8px; background: var(--panel2); color: var(--fg); padding: 8px 10px; font: 600 .9rem var(--txt); text-align: right; }
+.scores strong { font-family: var(--num); font-variant-numeric: tabular-nums; }
+.scores li.me { box-shadow: inset 0 0 0 2px var(--acc1); }
+.scores li b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#rankseg { width: 100%; } #rankseg button { flex: 1; }
+[hidden] { display: none !important; }
+.btn.danger { background: transparent; color: #e5484d; box-shadow: inset 0 0 0 2px #e5484d; }
 </style>
 
 <div class="app">
@@ -327,34 +346,49 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   <div class="sheetpanel" role="dialog" aria-modal="true" aria-label="Menu">
     <div class="sheethead">
       <div class="tabs" id="tabs" role="tablist">
-        <button type="button" role="tab" data-tab="goals">Cele</button>
-        <button type="button" role="tab" data-tab="themes">Motywy</button>
-        <button type="button" role="tab" data-tab="scores">Wyniki</button>
-        <button type="button" role="tab" data-tab="game">Gra</button>
+        <button type="button" role="tab" data-tab="goals"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg><span>Cele</span></button>
+        <button type="button" role="tab" data-tab="rank"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0z"/><path d="M8 6H4v1a3 3 0 003 3M16 6h4v1a3 3 0 01-3 3M12 13v4M8 20h8"/></svg><span>Ranking</span></button>
+        <button type="button" role="tab" data-tab="themes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 003-3c0-6-4-11-8-11z"/></svg><span>Motywy</span></button>
+        <button type="button" role="tab" data-tab="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg><span>Profil</span></button>
       </div>
       <button class="xbtn" id="closesheet" type="button" aria-label="Zamknij"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <div class="sheetbody">
-      <section class="pane" data-pane="goals"><ul class="goals" id="goals"></ul></section>
+      <section class="pane" data-pane="goals">
+        <div class="sh">Ta gra</div>
+        <div class="chips" id="nowline"></div>
+        <div class="sh">Cele</div>
+        <ul class="goals" id="goals"></ul>
+        <div class="sh">Narzędzia</div>
+        <ul class="tl" id="toolsprog"></ul>
+      </section>
+      <section class="pane" data-pane="rank" hidden>
+        <div class="seg" id="rankseg" role="group" aria-label="Ranking"><button type="button" class="on" data-r="global">Gracze</button><button type="button" data-r="mine">Moje wyniki</button></div>
+        <ul class="scores" id="rankglobal"><li class="empty"><small>Ranking graczy wymaga zalogowania kontem Google (zakładka Profil).</small></li></ul>
+        <ul class="scores" id="scores" hidden></ul>
+      </section>
       <section class="pane" data-pane="themes" hidden>
         <div class="row"><span>Tryb</span>
           <div class="seg" id="modeseg" role="group" aria-label="Tryb jasny lub ciemny"><button type="button" data-mode="light"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></svg> Jasny</button><button type="button" data-mode="dark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></svg> Ciemny</button></div>
         </div>
         <div class="themes" id="themes"></div>
       </section>
-      <section class="pane" data-pane="scores" hidden><ul class="scores" id="scores"></ul></section>
-      <section class="pane" data-pane="game" hidden>
+      <section class="pane" data-pane="more" hidden>
+        <div class="acct" id="acct" hidden>
+          <div class="av" id="acav">👤</div>
+          <div><b id="acname">Gość</b><small id="cloudmsg">Zaloguj się, aby zapisywać postęp i pojawić się w rankingu.</small></div>
+        </div>
+        <button class="btn wide" id="cloudbtn" type="button" hidden>Zaloguj przez Google</button>
+        <div class="row" id="nickrow" hidden><span>Nick w rankingu</span><input id="nick" maxlength="20" placeholder="np. Ania" autocomplete="off"></div>
+        <div class="row" id="rankrow" hidden><span>Pokaż mnie w rankingu</span><button class="switch" id="rankswitch" type="button" aria-label="Pokaż mnie w rankingu"><i></i></button></div>
         <div class="row"><span>Dźwięk</span><button class="switch" id="sound" type="button" aria-label="Wyłącz dźwięk" aria-pressed="true"><i></i></button></div>
-        <div class="chips" id="statsline"></div>
+        <div class="sh">Twoje rekordy</div>
+        <div class="chips two" id="statsline"></div>
         <details>
           <summary>Zasady gry</summary>
-          <p>Przeciągnij palcem po sąsiednich kafelkach o tej samej wartości, także po skosie. Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Za łańcuchy od trzech kafelków dostajesz mnożnik punktów. Monety zdobywasz za cele i za każdą nową największą wartość w grze, a wydajesz je na cofnięcie ruchu, młotek (usuwa jeden kafelek), przetasowanie planszy i nowe motywy. Gdy przez chwilę nic nie robisz, plansza podpowiada dobry łańcuch. Narzędzia odblokowujesz wynikiem: Cofnij od 100, Młotek od 500, Przetasuj od 1000 punktów. Z czasem na planszy pojawiają się kamienie ✕, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od 4 kafelków obok nich. Gdy nie ma już żadnego ruchu, przegrywasz. Po 1 000 000 punktów plansza poszerza się o kolumnę z lewej i z prawej. Gra zapisuje się sama, a najlepsze wyniki są w zakładce Wyniki.</p>
+          <p>Przeciągnij palcem po sąsiednich kafelkach o tej samej wartości, także po skosie. Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Za łańcuchy od trzech kafelków dostajesz mnożnik punktów. Monety zdobywasz za cele i za każdą nową największą wartość w grze, a wydajesz je na cofnięcie ruchu, młotek, przetasowanie planszy i nowe motywy. Narzędzia odblokowujesz wynikiem: Cofnij od 100, Młotek od 500, Przetasuj od 1000 punktów. Z czasem na planszy pojawiają się kamienie ✕, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od 4 kafelków obok nich. Gdy nie ma już żadnego ruchu, przegrywasz. Po 1 000 000 punktów plansza poszerza się o kolumnę z lewej i z prawej. Gra zapisuje się sama.</p>
         </details>
-        <div id="cloudbox" hidden style="margin:0 0 12px">
-          <p id="cloudmsg" style="margin:0 0 8px;font-size:.85rem;opacity:.75">Zaloguj się, aby zapisywać postęp na koncie Google.</p>
-          <button class="btn sec wide" id="cloudbtn" type="button">Zaloguj przez Google</button>
-        </div>
-        <button class="btn sec wide" id="newgame" type="button">Nowa gra</button>
+        <button class="btn danger wide" id="newgame" type="button">Nowa gra</button>
       </section>
     </div>
   </div>
@@ -578,7 +612,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   var S = loadStore();
   if (S.mode !== 'light' && S.mode !== 'dark') S.mode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
   function loadStore() {
-    var d = { coins: 20, done: [], bestTile: 0, longest: 0, merges: 0, best: 0, sound: true, ts: 0, saved: null, unl: [], scores: [], owned: ['rainbow'], palette: 'rainbow', mode: null };
+    var d = { coins: 20, done: [], bestTile: 0, longest: 0, merges: 0, best: 0, sound: true, ts: 0, nick: '', inRank: true, saved: null, unl: [], scores: [], owned: ['rainbow'], palette: 'rainbow', mode: null };
     try {
       var raw = localStorage.getItem('g2248');
       if (raw) {
@@ -732,7 +766,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 
   /* ---------- stan gry ---------- */
   var grid, nextId = 1, chain = [], score = 0, shownScore = 0, tweenId = 0, busy = false, over = false, maxEver = 8;
-  var moves = 0, stoneDue = false, hammer = false, snap = null, idleTimer = null, hintTiles = [];
+  var gameLongest = 0, moves = 0, stoneDue = false, hammer = false, snap = null, idleTimer = null, hintTiles = [];
 
   function pow2ceil(n) { var p = 2; while (p < n) p *= 2; return p; }
   function mult(n) { return 1 + 0.2 * (n - 2); }
@@ -838,6 +872,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     overEl.hidden = true;
     clearChain();
     updateScore(true);
+    renderStats();
     renderTools();
     renderHint();
     scheduleHint();
@@ -856,7 +891,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       for (var r = 0; r < ROWS; r++) { var row = []; for (var c = 0; c < COLS; c++) row.push(randomValue(8)); vs.push(row); }
     } while (!movesIn(vs));
     buildFrom(vs, true);
-    score = 0; snap = null; moves = 0; stoneDue = false; maxEver = maxValue();
+    score = 0; snap = null; moves = 0; gameLongest = 0; stoneDue = false; maxEver = maxValue();
     svgEl.style.opacity = 1;
     resetRound();
     saveGame();
@@ -877,13 +912,13 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   function resume(s) {
     setCols(s.vals[0].length, true);
     buildFrom(s.vals, false);
-    score = s.score; snap = null; moves = s.moves || 0;
+    score = s.score; snap = null; moves = s.moves || 0; gameLongest = s.gl || 0;
     maxEver = Math.max(s.maxEver || 8, maxValue());
     svgEl.style.opacity = 1;
     resetRound();
   }
   function saveGame() {
-    S.saved = over ? null : { vals: vals(), score: score, maxEver: maxEver, moves: moves };
+    S.saved = over ? null : { vals: vals(), score: score, maxEver: maxEver, moves: moves, gl: gameLongest };
     save();
   }
 
@@ -1040,12 +1075,20 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         '<div class="gbar"><div class="bar"><i style="width:' + (p / g.n * 100) + '%"></i></div><span class="gnum">' + p + ' / ' + g.n + '</span></div></li>';
     });
     goalsEl.innerHTML = html;
-    statsLineEl.innerHTML =
-      '<div class="chip"><b>' + (S.bestTile ? fmtT(S.bestTile) : '–') + '</b><small>Najlepszy kafelek</small></div>' +
-      '<div class="chip"><b>' + (S.longest || '–') + '</b><small>Najdłuższy łańcuch</small></div>' +
-      '<div class="chip"><b>' + S.merges + '</b><small>Połączeń</small></div>';
+    renderStats();
   }
 
+  var nowEl = $('nowline'), toolsEl = $('toolsprog');
+  function chipH(b, t) { return '<div class="chip"><b>' + b + '</b><small>' + t + '</small></div>'; }
+  function renderStats() {
+    nowEl.innerHTML = chipH(fmtS(score), 'Wynik') + chipH(gameLongest || '–', 'Najdłuższy łańcuch w tej grze') + chipH(moves, 'Ruchy');
+    statsLineEl.innerHTML = chipH(fmtS(S.best), 'Najwyższy wynik') + chipH(S.bestTile ? fmtT(S.bestTile) : '–', 'Najlepszy kafelek') +
+      chipH(S.longest || '–', 'Rekordowy łańcuch (cała historia)') + chipH(S.merges, 'Połączeń łącznie');
+    toolsEl.innerHTML = ['undo', 'hammer', 'shuffle'].map(function (id) {
+      var ok = S.unl.indexOf(id) >= 0, p = Math.min(100, S.best / UNLOCK[id] * 100);
+      return '<li class="' + (ok ? 'ok' : '') + '"><span>' + TNAME[id] + '</span><small>' + (ok ? 'Odblokowane ✓' : '🔒 ' + fmtS(S.best) + ' / ' + UNLOCK[id] + ' pkt') + '</small>' + (ok ? '' : '<div class="bar"><i style="width:' + p + '%"></i></div>') + '</li>';
+    }).join('');
+  }
   function renderHint() {
     if (hammer) {
       goalTextEl.textContent = 'Dotknij kafelka, który chcesz usunąć';
@@ -1195,7 +1238,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       lineEl.style.setProperty('--glow', col.c1);
       if (previewEl.hidden || pvEl.textContent !== fmtT(v)) bumpEl(previewEl, 'bump', 220);
       pvEl.textContent = fmtT(v);
-      pmEl.textContent = chain.length >= 3 ? '×' + mult(chain.length).toFixed(1) : '';
+      pmEl.textContent = chain.length + ' szt.' + (chain.length >= 3 ? ' · ×' + mult(chain.length).toFixed(1) : '');
       previewEl.style.setProperty('--c1', col.c1);
       previewEl.style.setProperty('--c2', col.c2);
       previewEl.style.setProperty('--tc', col.tc);
@@ -1318,6 +1361,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       bumpEl(scoreEl, 'bump', 220);
       S.merges++;
       if (n > S.longest) S.longest = n;
+      if (n > gameLongest) gameLongest = n;
       if (target > S.bestTile) S.bestTile = target;
       if (score > S.best) { S.best = score; fit(bestEl, fmtS(S.best)); }
       floatText(last, '+' + fmtS(gain), n >= 3);
@@ -1341,6 +1385,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       }
       checkUnlocks();
       checkGoals();
+      renderStats();
       if (COLS === 5 && score >= EXPAND_AT) setTimeout(function () { expandBoard(settle); }, 500);
       else setTimeout(settle, big ? 450 : 140);
     }, removed.length * step + flyMs + 30);
@@ -1517,6 +1562,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   var sheetEl = $('sheet'), tabsEl = $('tabs'), lastTab = 'goals';
   function showTab(t) {
     lastTab = t;
+    if (t === 'rank' && !$('rankglobal').hidden && window.__cloudRank) window.__cloudRank();
     Array.prototype.forEach.call(sheetEl.querySelectorAll('[data-pane]'), function (p) { p.hidden = p.getAttribute('data-pane') !== t; });
     Array.prototype.forEach.call(tabsEl.querySelectorAll('button'), function (b) {
       var on = b.getAttribute('data-tab') === t;
@@ -1535,6 +1581,19 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     var b = e.target.closest ? e.target.closest('button') : null;
     if (b) showTab(b.getAttribute('data-tab'));
   });
+  var rankSeg = $('rankseg');
+  rankSeg.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('button') : null; if (!b) return;
+    var g = b.getAttribute('data-r') === 'global';
+    Array.prototype.forEach.call(rankSeg.children, function (x) { x.classList.toggle('on', x === b); });
+    $('rankglobal').hidden = !g; scoresEl.hidden = g;
+    if (g && window.__cloudRank) window.__cloudRank();
+  });
+  var nickEl = $('nick'), rankSw = $('rankswitch');
+  function syncRankUI() { nickEl.value = S.nick || ''; rankSw.classList.toggle('off', S.inRank === false); rankSw.setAttribute('aria-pressed', String(S.inRank !== false)); }
+  nickEl.addEventListener('change', function () { S.nick = nickEl.value.trim().slice(0, 20); save(); });
+  rankSw.addEventListener('click', function () { S.inRank = S.inRank === false; save(); syncRankUI(); });
+  syncRankUI();
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheetEl.hidden) closeSheet(); });
   showTab('goals');
 
@@ -1560,9 +1619,9 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       var seen = {};
       S.scores = (S.scores || []).concat(c.scores || []).filter(function (x) { var k = x.s + '_' + x.d; if (seen[k]) return false; seen[k] = 1; return true; })
         .sort(function (a, b) { return b.s - a.s; }).slice(0, 10);
-      if (newer) { S.coins = c.coins; S.palette = c.palette; S.mode = c.mode; S.sound = c.sound; S.saved = c.saved; S.ts = c.ts; }
+      if (newer) { S.coins = c.coins; S.palette = c.palette; S.mode = c.mode; S.sound = c.sound; S.saved = c.saved; S.ts = c.ts; S.nick = c.nick || ''; S.inRank = c.inRank !== false; }
       window.__noStamp = true; save(); window.__noStamp = false;
-      applyTheme(S.palette); fit(bestEl, fmtS(S.best)); checkUnlocks(true); renderScores(); setSoundLabel(); renderGoals(); setCoins();
+      applyTheme(S.palette); fit(bestEl, fmtS(S.best)); checkUnlocks(true); renderScores(); setSoundLabel(); renderGoals(); setCoins(); syncRankUI();
       if (newer && validSaved(S.saved)) {
         window.__pend.forEach(clearTimeout); window.__pend = [];
         toastsEl.innerHTML = ''; appEl.classList.remove('expanding');
@@ -1574,7 +1633,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 </script>
 
 <script type="module">
-/* ====== KONFIGURACJA FIREBASE: wklej swoje dane z konsoli Firebase ====== */
+/* ====== KONFIGURACJA FIREBASE ====== */
 const firebaseConfig = {
   apiKey: "AIzaSyCgN6dn92eA8y0dQ05Gf4SJiq35fC60e6o",
   authDomain: "polish-2248.firebaseapp.com",
@@ -1583,40 +1642,70 @@ const firebaseConfig = {
   messagingSenderId: "356326332171",
   appId: "1:356326332171:web:8412e2e135216e26e4b40e"
 };
-/* ======================================================================= */
-if (!firebaseConfig.apiKey.startsWith("WKLEJ")) try {
-  const V = "10.12.2", B = "https://www.gstatic.com/firebasejs/" + V + "/";
+/* =================================== */
+try {
+  const B = "https://www.gstatic.com/firebasejs/10.12.2/";
   const { initializeApp } = await import(B + "firebase-app.js");
   const A = await import(B + "firebase-auth.js");
   const F = await import(B + "firebase-firestore.js");
   const app = initializeApp(firebaseConfig), auth = A.getAuth(app), db = F.initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
-  const tmo = (p, ms) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error('timeout')), ms))]);
-  const box = document.getElementById("cloudbox"), msg = document.getElementById("cloudmsg"), btn = document.getElementById("cloudbtn");
-  let user = null, timer = 0, busy = false;
-  box.hidden = false;
-  const ref = () => F.doc(db, "users", user.uid);
+  const tmo = (p, ms) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error("timeout")), ms))]);
+  const $ = (id) => document.getElementById(id);
+  const acct = $("acct"), msg = $("cloudmsg"), btn = $("cloudbtn"), nm = $("acname"), av = $("acav"), rankG = $("rankglobal");
+  let user = null, timer = 0, busy = false, lastRank = "";
+  acct.hidden = false; btn.hidden = false;
+  const shownName = () => ((window.__game.state().nick || (user.displayName || "Gracz").split(" ")[0]) + "").slice(0, 20);
+  const err = (e) => e.message === "timeout" ? "Brak odpowiedzi z Firestore. Sprawdź bazę, reguły i blokery reklam." : "Błąd: " + (e.code || e.message);
   async function push() {
     if (!user || !window.__game) return;
     try {
       const S = window.__game.state();
-      await tmo(F.setDoc(ref(), { json: JSON.stringify(S), ts: S.ts || Date.now() }), 12000);
-      msg.textContent = "Zsynchronizowano ✓ · " + (user.displayName || user.email);
-    } catch (e) { msg.textContent = e.message === 'timeout' ? "Brak odpowiedzi z Firestore. Sprawdź, czy baza jest utworzona, reguły i blokery reklam." : "Nie udało się zapisać w chmurze: " + (e.code || e.message) + " (zapis lokalny działa)."; }
+      await tmo(F.setDoc(F.doc(db, "users", user.uid), { json: JSON.stringify(S), ts: S.ts || Date.now() }), 12000);
+      const key = S.inRank === false ? "off" : shownName() + "|" + S.best;
+      if (key !== lastRank) {
+        const lr = F.doc(db, "leaderboard", user.uid);
+        if (S.inRank === false) await tmo(F.deleteDoc(lr), 12000);
+        else if (S.best > 0) await tmo(F.setDoc(lr, { name: shownName(), best: S.best, ts: Date.now() }), 12000);
+        lastRank = key;
+      }
+      msg.textContent = "Zsynchronizowano ✓";
+    } catch (e) { msg.textContent = err(e) + " (zapis lokalny działa)"; }
   }
   window.__cloudPush = () => { if (!user) return; clearTimeout(timer); timer = setTimeout(push, 1500); };
   document.addEventListener("visibilitychange", () => { if (document.hidden && user) { clearTimeout(timer); push(); } });
+  const li = (cls, node) => { const l = document.createElement("li"); if (cls) l.className = cls; l.append(node); return l; };
+  const note = (t) => { const s = document.createElement("small"); s.textContent = t; return li("empty", s); };
+  window.__cloudRank = async function () {
+    rankG.replaceChildren(note(user ? "Ładuję ranking…" : "Zaloguj się kontem Google (zakładka Profil), aby zobaczyć ranking graczy."));
+    if (!user) return;
+    try {
+      const snap = await tmo(F.getDocs(F.query(F.collection(db, "leaderboard"), F.orderBy("best", "desc"), F.limit(20))), 12000);
+      if (snap.empty) { rankG.replaceChildren(note("Ranking jest jeszcze pusty. Zagraj i zdobądź pierwsze miejsce!")); return; }
+      rankG.replaceChildren(...snap.docs.map((d) => {
+        const x = d.data(), l = document.createElement("li"), b = document.createElement("b"), st = document.createElement("strong");
+        if (d.id === user.uid) l.className = "me";
+        b.textContent = String(x.name || "Gracz").slice(0, 20); st.textContent = Number(x.best).toLocaleString("pl-PL");
+        l.append(b, st); return l;
+      }));
+    } catch (e) { rankG.replaceChildren(note(err(e))); }
+  };
   async function sync() {
     try {
       msg.textContent = "Synchronizuję…";
-      const snap = await tmo(F.getDoc(ref()), 12000);
+      const snap = await tmo(F.getDoc(F.doc(db, "users", user.uid)), 12000);
       if (snap.exists()) window.__game.merge(JSON.parse(snap.data().json));
       await push();
-    } catch (e) { msg.textContent = e.message === 'timeout' ? "Brak odpowiedzi z Firestore. Sprawdź, czy baza jest utworzona, reguły i blokery reklam." : "Błąd synchronizacji: " + (e.code || e.message); }
+      if (!$("rankglobal").hidden && !document.querySelector('[data-pane="rank"]').hidden) window.__cloudRank();
+    } catch (e) { msg.textContent = err(e); }
   }
   A.onAuthStateChanged(auth, (u) => {
-    user = u;
-    btn.textContent = u ? "Wyloguj" : "Zaloguj przez Google";
-    if (u) sync(); else msg.textContent = "Zaloguj się, aby zapisywać postęp na koncie Google.";
+    user = u; lastRank = "";
+    btn.textContent = u ? "Wyloguj" : "Zaloguj przez Google"; btn.classList.toggle("sec", !!u);
+    $("nickrow").hidden = $("rankrow").hidden = !u;
+    nm.textContent = u ? (u.displayName || u.email) : "Gość";
+    av.textContent = "👤";
+    if (u && u.photoURL) { const im = new Image(); im.referrerPolicy = "no-referrer"; im.src = u.photoURL; im.alt = ""; av.replaceChildren(im); }
+    if (u) sync(); else { msg.textContent = "Zaloguj się, aby zapisywać postęp i pojawić się w rankingu."; window.__cloudRank(); }
   });
   btn.addEventListener("click", async () => {
     if (busy) return; busy = true;
