@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Polish 2248</title>
 <meta name="description" content="Polish 2248 – łącz kafelki o tej samej wartości w długie łańcuchy i zdobywaj rekordy.">
-<meta name="theme-color" content="#5b4bd8">
+<meta name="theme-color" id="themecolor" content="#12152a">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -624,6 +624,15 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   PALETTES.forEach(function (p) { if (EXT[p.id]) p.c = p.c.concat(EXT[p.id]); });
   var UIMAP = { bg: ['--bg'], fg: ['--fg'], muted: ['--muted'], panel: ['--panel'], panel2: ['--panel2'], frame: ['--frame'], socket: ['--socket'], acc: ['--acc1', '--acc2'], line: ['--line'] };
   var appliedVars = [], segEl = null;
+  /* Pasek stanu, dolny pasek i obszar poza ekranem przyjmują kolor tła wybranego motywu. */
+  function syncChrome() {
+    var m = getComputedStyle(document.body).backgroundColor.match(/\d+(\.\d+)?/g);
+    if (!m) return;
+    var hex = '#' + m.slice(0, 3).map(function (x) { var h = Math.round(+x).toString(16); return h.length < 2 ? '0' + h : h; }).join('');
+    document.documentElement.style.backgroundColor = hex;
+    var mt = document.getElementById('themecolor');
+    if (mt) mt.setAttribute('content', hex);
+  }
   function applyTheme(id) {
     var th = palById(id), root = document.documentElement, ui = th.ui && th.ui[S.mode];
     appliedVars.forEach(function (v) { root.style.removeProperty(v); });
@@ -633,6 +642,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     });
     root.setAttribute('data-theme', S.mode);
     document.body.className = th.cls || '';
+    syncChrome();
     if (segEl) Array.prototype.forEach.call(segEl.querySelectorAll('button'), function (b) {
       var on = b.getAttribute('data-mode') === S.mode;
       b.classList.toggle('on', on);

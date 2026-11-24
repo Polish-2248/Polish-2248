@@ -4,9 +4,9 @@ Gra logiczna w przeglądarce: łącz sąsiednie kafelki o tej samej wartości w 
 
 ## Uruchomienie na GitHub Pages
 
-1. Utwórz repozytorium na GitHubie i wgraj wszystkie pliki z tego folderu (z zachowaniem `icons/` i `.github/`).
-2. W repozytorium wejdź w **Settings → Pages** i w polu **Source** wybierz **GitHub Actions**.
-3. Wypchnij zmiany na gałąź `main`. Workflow `Deploy to GitHub Pages` opublikuje grę pod adresem `https://TWOJ-LOGIN.github.io/NAZWA-REPO/`.
+1. Wgraj wszystkie pliki do głównego katalogu repozytorium (bez żadnych folderów).
+2. Wejdź w **Settings → Pages**, w polu **Source** wybierz **Deploy from a branch**, gałąź `main` i folder `/ (root)`, i zapisz.
+3. Po minucie gra będzie pod adresem `https://TWOJ-LOGIN.github.io/NAZWA-REPO/`.
 
 ## Instalacja na telefonie
 
@@ -28,14 +28,13 @@ Konfiguracja Firebase jest na końcu `index.html` (`firebaseConfig`). Po wdroże
 
 Bez logowania gra działa w pełni lokalnie (zapis w przeglądarce).
 
-## Pliki
+## Pliki (wszystkie w jednym katalogu)
 
 | Plik | Rola |
 | --- | --- |
 | `index.html` | cała gra (HTML, CSS, JS) |
 | `manifest.webmanifest` | dane aplikacji: nazwa, ikony, kolory |
 | `sw.js` | service worker (praca offline) |
-| `icons/` | ikony aplikacji |
-| `.github/workflows/pages.yml` | automatyczne wdrożenie na GitHub Pages |
+| `icon-192.png`, `icon-512.png`, `maskable-512.png`, `apple-touch-icon.png` | ikony aplikacji |
 
 Po zmianie plików zwiększ `VERSION` w `sw.js`, aby użytkownicy dostali świeżą wersję z pamięci podręcznej.
