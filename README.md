@@ -26,7 +26,7 @@ Konfiguracja Firebase jest na końcu `index.html` (`firebaseConfig`). Po wdroże
 1. W konsoli Firebase wejdź w **Authentication → Settings → Authorized domains** i dodaj `TWOJ-LOGIN.github.io`. Bez tego logowanie Google nie zadziała na nowej domenie.
 2. Ranking zapisuje w kolekcji `leaderboard` pola: `name`, `best`, `av` (awatar), `ac` (kolor awatara), `ts`. Jeśli masz reguły Firestore ograniczające pola dokumentu, dodaj `av` i `ac`.
 
-Bez logowania gra działa w pełni lokalnie (zapis w przeglądarce).
+Logowanie kontem Google jest obowiązkowe: bez niego gra pokazuje tylko ekran logowania. Zapis lokalny jest przypisany do konta (klucz `g2248:UID`), więc po przelogowaniu na inne konto nie przenosi się wynik z poprzedniego. Gra potrzebuje internetu przy pierwszym logowaniu, potem działa też offline.
 
 ## Pliki (wszystkie w jednym katalogu)
 

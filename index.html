@@ -343,6 +343,15 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 .steps li::before { content: counter(st); width: 34px; height: 34px; border-radius: 50%; background: var(--acc1); color: #fff; display: grid; place-items: center; font: 800 1rem var(--num); }
 .steps b { font-weight: 700; }
 .accstat { display: flex; align-items: center; gap: 10px; }
+
+/* Ekran logowania */
+.gate { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: max(24px, env(safe-area-inset-top, 0px)) 24px max(24px, env(safe-area-inset-bottom, 0px)); background: var(--bg); color: var(--fg); overflow-y: auto; }
+.gatebox { width: 100%; max-width: 340px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+.gatelogo { width: 96px; height: 96px; border-radius: 24px; background: #12152a; padding: 14px; box-sizing: border-box; }
+.gate h1 { margin: 0; font-size: 2rem; text-align: center; }
+.gate p { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--fg); min-height: 3em; }
+.gate small { font-size: 0.78rem; line-height: 1.45; color: var(--muted); }
+.gate .btn { margin-top: 4px; }
 </style>
 
 </head><body>
@@ -417,9 +426,9 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         <div class="row" id="photorow" hidden><span>Użyj zdjęcia z konta Google</span><button class="switch off" id="photoswitch" type="button" aria-label="Użyj zdjęcia z konta Google"><i></i></button></div>
         <div class="sh">Konto i ranking</div>
         <div class="acct" id="acct" hidden>
-          <div><b id="acname">Gość</b><small id="cloudmsg">Zaloguj się, aby zapisywać postęp w chmurze i pojawić się w rankingu.</small></div>
+          <div><b id="acname">Gość</b><small id="cloudmsg">Postęp zapisuje się na Twoim koncie Google.</small></div>
         </div>
-        <button class="btn wide" id="cloudbtn" type="button" hidden>Zaloguj przez Google</button>
+        <button class="btn sec wide" id="cloudbtn" type="button" hidden>Wyloguj się</button>
         <div class="row" id="rankrow" hidden><span>Pokaż mnie w rankingu</span><button class="switch" id="rankswitch" type="button" aria-label="Pokaż mnie w rankingu"><i></i></button></div>
         <div class="sh">Twoje rekordy</div>
         <div class="chips two" id="statsline"></div>
@@ -436,7 +445,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 
       <section class="pane" data-pane="rank" hidden>
         <div class="seg" id="rankseg" role="group" aria-label="Ranking"><button type="button" class="on" data-r="global">Gracze</button><button type="button" data-r="mine">Moje wyniki</button></div>
-        <ul class="scores" id="rankglobal"><li class="empty"><small>Ranking graczy wymaga zalogowania kontem Google (zakładka Profil).</small></li></ul>
+        <ul class="scores" id="rankglobal"><li class="empty"><small>Ładuję ranking…</small></li></ul>
         <ul class="scores" id="scores" hidden></ul>
       </section>
 
@@ -454,7 +463,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         <button class="btn sec wide" id="showintro" type="button">Jak grać? (krótki samouczek)</button>
         <details>
           <summary>Pełne zasady gry</summary>
-          <p>Przeciągnij palcem po sąsiednich kafelkach o tej samej wartości, także po skosie. Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Za łańcuchy od trzech kafelków dostajesz mnożnik punktów. Monety zdobywasz za cele i za każdą nową największą wartość w grze, a wydajesz je na cofnięcie ruchu, młotek, przetasowanie planszy i nowe motywy. Narzędzia odblokowujesz wynikiem: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze, a w nowej grze wraca do początkowej. Z czasem na planszy pojawiają się kamienie ✕, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od 4 kafelków obok nich. Gdy nie ma już żadnego ruchu, przegrywasz. Po 1 000 000 punktów plansza poszerza się o kolumnę z lewej i z prawej. Gra zapisuje się sama.</p>
+          <p>Przeciągnij palcem po sąsiednich kafelkach o tej samej wartości, także po skosie. Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Za łańcuchy od trzech kafelków dostajesz mnożnik punktów. Monety zdobywasz za cele i za każdą nową największą wartość w grze, a wydajesz je na cofnięcie ruchu, młotek, przetasowanie planszy i nowe motywy. Narzędzia odblokowujesz wynikiem: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze, a w nowej grze wraca do początkowej. Z czasem na planszy pojawiają się kamienie ✕, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od 4 kafelków obok nich. Gdy nie ma już żadnego ruchu, przegrywasz. Po 1 000 000 punktów plansza poszerza się o kolumnę z lewej i z prawej, wszystkie „2” zamieniają się w „4” i do końca tej gry już się nie pojawiają. Gra zapisuje się sama.</p>
         </details>
         <div class="sh" id="installhead">Aplikacja na telefon</div>
         <div id="installbox" class="pane">
@@ -485,6 +494,16 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     </ol>
     <p class="note">Wszystko znajdziesz w menu (przycisk ☰ na dole): profil, cele, ranking i motywy.</p>
     <button class="btn wide" id="introok" type="button">Zaczynamy</button>
+  </div>
+</div>
+
+<div class="gate" id="gate" data-state="loading" data-boot="1" role="dialog" aria-modal="true" aria-labelledby="gatetitle">
+  <div class="gatebox">
+    <svg class="gatelogo" viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="7" fill="#ffc83d"/><rect x="34" y="2" width="28" height="28" rx="7" fill="#2ecc71"/><rect x="2" y="34" width="28" height="28" rx="7" fill="#e0408f"/><rect x="34" y="34" width="28" height="28" rx="7" fill="#4fc9e8"/></svg>
+    <h1 id="gatetitle">Polish 2248</h1>
+    <p id="gatemsg" aria-live="polite">Łączę z kontem Google…</p>
+    <button class="btn wide" id="gatebtn" type="button" hidden>Zaloguj przez Google</button>
+    <small>Wynik, rekordy i postęp są zapisywane osobno dla każdego konta Google.</small>
   </div>
 </div>
 
@@ -715,23 +734,23 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   makeSockets();
 
   /* ---------- zapis ---------- */
+  /* Każde konto Google ma własny zapis lokalny (klucz g2248:UID). Bez zalogowanego konta nic się nie zapisuje. */
+  var storeKey = null;
+  try { var hintUid = localStorage.getItem('g2248-uid'); if (hintUid) storeKey = 'g2248:' + hintUid; } catch (e) {}
   var S = loadStore();
   if (S.mode !== 'light' && S.mode !== 'dark') S.mode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
   function loadStore() {
     var d = { coins: 20, done: [], bestTile: 0, longest: 0, merges: 0, best: 0, sound: true, ts: 0, nick: '', inRank: true, saved: null, unl: [], scores: [], owned: ['rainbow'], palette: 'rainbow', mode: null, avatar: '🙂', avColor: '#5b4bd8', avPhoto: false, seen: false };
     try {
-      var raw = localStorage.getItem('g2248');
+      var raw = storeKey && localStorage.getItem(storeKey);
       if (raw) {
         var o = JSON.parse(raw);
         for (var k in d) if (o[k] !== undefined) d[k] = o[k];
-      } else {
-        var b = parseInt(localStorage.getItem('2248-best') || '0', 10);
-        if (b) d.best = b;
       }
     } catch (e) {}
     return d;
   }
-  function save() { if (!window.__noStamp) S.ts = Date.now(); try { localStorage.setItem('g2248', JSON.stringify(S)); } catch (e) {} if (window.__cloudPush) window.__cloudPush(S); }
+  function save() { if (!window.__noStamp) S.ts = Date.now(); if (storeKey) { try { localStorage.setItem(storeKey, JSON.stringify(S)); } catch (e) {} } if (window.__cloudPush) window.__cloudPush(S); }
 
   /* ---------- dźwięk ---------- */
   var AC = null, master = null;
@@ -879,7 +898,8 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 
   function spawnRange(maxV) { var hi = Math.max(3, Math.round(Math.log2(maxV)) - 3); return [1, Math.min(7, hi + 1)]; }
   function randomValue(maxV) {
-    var rg = spawnRange(maxV), total = 0, ws = [], i;
+    var rg = spawnRange(maxV).slice(), total = 0, ws = [], i;
+    if (COLS >= 7) rg[0] = Math.max(rg[0], 2); /* po 1 000 000 pkt nie pojawiają się już "2" */
     for (i = rg[0]; i <= rg[1]; i++) { var w = Math.pow(0.62, i - rg[0]); ws.push(w); total += w; }
     var r = Math.random() * total;
     for (i = 0; i < ws.length; i++) { r -= ws[i]; if (r <= 0) return Math.pow(2, rg[0] + i); }
@@ -1017,7 +1037,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   }
   function resume(s) {
     setCols(s.vals[0].length, true);
-    buildFrom(s.vals, false);
+    buildFrom(s.vals[0].length >= 7 ? s.vals.map(function (row) { return row.map(function (v) { return v === 2 ? 4 : v; }); }) : s.vals, false);
     score = s.score; snap = null; uses = s.uses || { undo: 0, hammer: 0, shuffle: 0 }; moves = s.moves || 0; gameLongest = s.gl || 0;
     maxEver = Math.max(s.maxEver || 8, maxValue());
     svgEl.style.opacity = 1;
@@ -1289,6 +1309,10 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     var p = boardEl.querySelector('.sockets');
     appEl.classList.add('expanding'); bumpEl(boardEl, 'grow', 1900);
     toast('Plansza się powiększa! 7×8', 'gold', 2800); play('record');
+    grid.forEach(function (row) { row.forEach(function (t) {
+      if (t && t.v === 2) { t.v = 4; paint(t); bumpEl(t.el, 'pop', 400); }
+    }); });
+    toast('Dwójki zamieniają się w czwórki', 'gold', 2800);
     Array.prototype.slice.call(p.children).forEach(function (d) { d._c++; d.style.transform = 'translate(' + (d._c * 100) + '%,' + (d._r * 100) + '%)'; });
     grid.forEach(function (row) { row.unshift(null); row.push(null); });
     grid.forEach(function (row, r) { row.forEach(function (t, c) { if (t) { t.c = c; place(t, r, c); } }); });
@@ -1806,9 +1830,26 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   if (validSaved(S.saved)) resume(S.saved); else newGame();
   if (!S.seen) openIntro();
 
+  /* ekran logowania: gra jest zasłonięta, dopóki konto Google nie jest zalogowane */
+  var gateEl = $('gate'), gateBtn = $('gatebtn'), gateMsg = $('gatemsg');
+  window.__gate = function (state, text) {
+    if (state === 'ok') { gateEl.hidden = true; return; }
+    gateEl.hidden = false; gateEl.setAttribute('data-state', state);
+    gateMsg.textContent = text || '';
+    gateBtn.hidden = state === 'loading';
+    gateBtn.textContent = state === 'login' ? 'Zaloguj przez Google' : 'Spróbuj ponownie';
+  };
+  gateBtn.addEventListener('click', function () {
+    if (gateEl.getAttribute('data-state') === 'login' && window.__login) window.__login(); else location.reload();
+  });
+  setTimeout(function () {
+    if (gateEl.getAttribute('data-boot') === '1') window.__gate('error', 'Łączenie trwa zbyt długo. Sprawdź internet i spróbuj ponownie.');
+  }, 15000);
+
   /* ---------- most do chmury (Firebase) ---------- */
   window.__game = {
     state: function () { return S; },
+    setUid: function (uid) { storeKey = uid ? 'g2248:' + uid : null; },
     setGoogle: function (photo) { gPhoto = photo || null; renderProfile(); },
     merge: function (c) {
       if (!c) return;
@@ -1822,6 +1863,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         .sort(function (a, b) { return b.s - a.s; }).slice(0, 10);
       if (newer) { S.coins = c.coins; S.palette = c.palette; S.mode = c.mode; S.sound = c.sound; S.saved = c.saved; S.ts = c.ts; S.nick = c.nick || ''; S.inRank = c.inRank !== false; S.avatar = c.avatar || S.avatar; S.avColor = c.avColor || S.avColor; S.avPhoto = !!c.avPhoto; }
       window.__noStamp = true; save(); window.__noStamp = false;
+      if (S.seen && !introEl.hidden) { introEl.hidden = true; scheduleHint(); }
       applyTheme(S.palette); fit(bestEl, fmtS(S.best)); checkUnlocks(true); renderScores(); setSoundLabel(); renderGoals(); setCoins(); syncRankUI();
       if (newer && validSaved(S.saved)) {
         window.__pend.forEach(clearTimeout); window.__pend = [];
@@ -1900,26 +1942,52 @@ try {
       if (!$("rankglobal").hidden && !document.querySelector('[data-pane="rank"]').hidden) window.__cloudRank();
     } catch (e) { msg.textContent = err(e); }
   }
-  A.onAuthStateChanged(auth, (u) => {
-    user = u; lastRank = "";
-    btn.textContent = u ? "Wyloguj" : "Zaloguj przez Google"; btn.classList.toggle("sec", !!u);
-    $("rankrow").hidden = !u;
-    nm.textContent = u ? "Zalogowano: " + (u.displayName || u.email) : "Gość";
-    window.__game.setGoogle(u && u.photoURL);
-    if (u) sync(); else { msg.textContent = "Zaloguj się, aby zapisywać postęp i pojawić się w rankingu."; window.__cloudRank(); }
-  });
-  btn.addEventListener("click", async () => {
+  const HK = "g2248-uid";
+  const hint = { get: () => { try { return localStorage.getItem(HK) || ""; } catch (e) { return ""; } }, set: (v) => { try { v ? localStorage.setItem(HK, v) : localStorage.removeItem(HK); return true; } catch (e) { return false; } } };
+  window.__login = async () => {
     if (busy) return; busy = true;
+    window.__gate("loading", "Logowanie…");
     try {
-      if (user) await A.signOut(auth);
-      else {
-        const p = new A.GoogleAuthProvider();
-        try { await A.signInWithPopup(auth, p); }
-        catch (e) { if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") await A.signInWithRedirect(auth, p); else if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") msg.textContent = "Logowanie nie powiodło się (" + e.code + ")."; }
+      const p = new A.GoogleAuthProvider();
+      try { await A.signInWithPopup(auth, p); }
+      catch (e) {
+        if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") await A.signInWithRedirect(auth, p);
+        else if (e.code === "auth/popup-closed-by-user" || e.code === "auth/cancelled-popup-request") window.__gate("login", "Okno logowania zostało zamknięte. Zaloguj się, aby zagrać.");
+        else window.__gate("login", "Logowanie nie powiodło się (" + (e.code || e.message) + "). Spróbuj ponownie.");
       }
     } finally { busy = false; }
+  };
+  A.onAuthStateChanged(auth, (u) => {
+    $("gate").setAttribute("data-boot", "");
+    user = u; lastRank = "";
+    if (u) {
+      /* inne konto niż poprzednio: przeładuj, żeby wczytać zapis tego konta (nigdy nie łączymy danych różnych kont) */
+      if (hint.get() !== u.uid && hint.set(u.uid) && hint.get() === u.uid) { window.__gate("loading", "Wczytuję Twoje konto…"); location.reload(); return; }
+      window.__game.setUid(u.uid);
+      window.__gate("ok");
+    } else {
+      hint.set("");
+      window.__game.setUid(null);
+      window.__gate("login", "Zaloguj się kontem Google, aby zagrać. Twój wynik i postęp będą przypisane do tego konta.");
+    }
+    $("rankrow").hidden = !u;
+    nm.textContent = u ? "Konto: " + (u.displayName || u.email) : "";
+    window.__game.setGoogle(u && u.photoURL);
+    if (u) sync(); else window.__cloudRank();
   });
-} catch (e) { console.warn("Chmura niedostępna:", e); }
+  btn.addEventListener("click", async () => {
+    if (busy || !user) return;
+    if (!confirm("Wylogować się? Postęp jest zapisany na Twoim koncie Google.")) return;
+    busy = true; btn.disabled = true;
+    try {
+      clearTimeout(timer);
+      await Promise.race([push(), new Promise((r) => setTimeout(r, 4000))]);
+      hint.set("");
+      await A.signOut(auth);
+    } catch (e) {}
+    location.reload();
+  });
+} catch (e) { console.warn("Chmura niedostępna:", e); if (window.__gate) window.__gate("error", "Nie udało się połączyć z logowaniem Google. Sprawdź internet i spróbuj ponownie."); }
 </script>
 
 </body></html>
