@@ -139,7 +139,8 @@ svg.path polyline { fill: none; stroke: var(--line); stroke-width: 0.13; stroke-
 .btn.wide { width: 100%; }
 .btn:focus-visible, .pu:focus-visible, .ibtn:focus-visible, .hintline:focus-visible, .coinpill:focus-visible, .xbtn:focus-visible, .switch:focus-visible { outline: 3px solid var(--acc1); outline-offset: 2px; }
 
-.dock { display: grid; grid-template-columns: repeat(3, 1fr) 48px; gap: 6px; }
+.dock { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.pi.neutral { background: var(--panel2); color: var(--fg); }
 .pu, .ibtn { position: relative; border: 0; border-radius: 14px; cursor: pointer; background: var(--panel); color: var(--fg); }
 .pu { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 2px 8px; font: 600 0.7rem var(--txt); min-width: 0; }
 .pi { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; color: #fff; background: var(--acc1); }
@@ -352,6 +353,30 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 .gate p { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--fg); min-height: 3em; }
 .gate small { font-size: 0.78rem; line-height: 1.45; color: var(--muted); }
 .gate .btn { margin-top: 4px; }
+
+/* Menu: ekran główny i podstrony */
+.mprofile { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--panel); border: 0; border-radius: 18px; padding: 14px; cursor: pointer; color: var(--fg); font: inherit; }
+.mprofile .pav { width: 54px; height: 54px; font-size: 1.7rem; }
+.mtxt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.mtxt b { font: 800 1.08rem var(--num); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mtxt small { color: var(--muted); font-size: 0.78rem; }
+.mtxt .mlink { color: var(--acc1); font-weight: 600; }
+.mchev { width: 18px; height: 18px; flex: none; stroke: var(--muted); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.mgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mtile { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; background: var(--panel); border: 0; border-radius: 18px; padding: 14px; cursor: pointer; color: var(--fg); text-align: left; font: inherit; min-height: 118px; }
+.mtile .mi { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; background: var(--acc1); color: #fff; margin-bottom: 6px; }
+.mtile .mi svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mtile b { font-size: 1rem; font-weight: 800; }
+.mtile small { color: var(--muted); font-size: 0.75rem; line-height: 1.3; }
+.mlist { display: flex; flex-direction: column; gap: 8px; }
+.mrow { display: flex; align-items: center; gap: 12px; width: 100%; background: var(--panel); border: 0; border-radius: 14px; padding: 14px; cursor: pointer; color: var(--fg); font: 700 0.92rem var(--txt); text-align: left; }
+.mrow > svg:first-child { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.mrow .lbl { flex: 1; }
+.mrow[data-arm] { color: #e5484d; box-shadow: inset 0 0 0 2px #e5484d; }
+.mprofile:focus-visible, .mtile:focus-visible, .mrow:focus-visible { outline: 3px solid var(--acc1); outline-offset: 2px; }
+.updbar { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 60; max-width: 416px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--fg); color: var(--bg); border-radius: 14px; padding: 10px 12px 10px 14px; font: 600 0.85rem var(--txt); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); }
+.updbar button { border: 0; border-radius: 10px; background: var(--acc1); color: #fff; font: 700 0.82rem var(--txt); padding: 9px 13px; cursor: pointer; }
+.updbar button:disabled { opacity: 0.6; }
 </style>
 
 </head><body>
@@ -397,8 +422,9 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       <span class="pi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c4 0 6 10 10 10h4"/><path d="M3 17h4c1.5 0 2.5-1.5 3.5-3"/><path d="M14 9c1-1.5 2-2 3-2h4"/><path d="M18 4l3 3-3 3"/><path d="M18 14l3 3-3 3"/></svg></span>
       Przetasuj<span class="price">60<i class="coin"></i></span>
     </button>
-    <button class="ibtn" id="menu" type="button" aria-label="Menu">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    <button class="pu" id="menu" type="button">
+      <span class="pi neutral"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span>
+      Menu
     </button>
   </div>
 </div>
@@ -406,10 +432,29 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 <div class="sheet" id="sheet" hidden>
   <div class="sheetpanel" role="dialog" aria-modal="true" aria-labelledby="sheettitle">
     <div class="sheethead">
+      <button class="xbtn" id="backsheet" type="button" aria-label="Wróć do menu" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
       <h2 class="sheettitle" id="sheettitle">Menu</h2>
       <button class="xbtn" id="closesheet" type="button" aria-label="Zamknij menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <div class="sheetbody">
+
+      <section class="pane" data-pane="home">
+        <button class="mprofile" id="mprofile" type="button" data-go="profile">
+          <span class="pav" id="mav">🙂</span>
+          <span class="mtxt"><b id="mname">Gracz</b><small id="msub"></small><small class="mlink">Zmień nick i awatar</small></span>
+          <svg class="mchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="mgrid">
+          <button class="mtile" type="button" data-go="goals"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span><b>Cele</b><small id="msgoals"></small></button>
+          <button class="mtile" type="button" data-go="rank"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0z"/><path d="M8 6H4v1a3 3 0 003 3M16 6h4v1a3 3 0 01-3 3M12 13v4M8 20h8"/></svg></span><b>Ranking</b><small>Gracze i moje wyniki</small></button>
+          <button class="mtile" type="button" data-go="themes"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 003-3c0-6-4-11-8-11z"/></svg></span><b>Motywy</b><small id="msthemes"></small></button>
+          <button class="mtile" type="button" data-go="settings"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></span><b>Ustawienia</b><small id="mssettings"></small></button>
+        </div>
+        <div class="mlist">
+          <button class="mrow" type="button" data-go="help"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1-1.5 2"/><path d="M12 17h.01"/></svg><span class="lbl">Jak grać</span><svg class="mchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <button class="mrow" id="newgame" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 10-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span class="lbl">Nowa gra</span></button>
+        </div>
+      </section>
 
       <section class="pane" data-pane="profile" hidden>
         <div class="phero">
@@ -421,20 +466,16 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         </div>
         <div class="sh">Awatar</div>
         <div class="avgrid" id="avgrid" role="group" aria-label="Wybierz awatar"></div>
-        <div class="sh">Kolor tła</div>
+        <div class="sh">Kolor tła awatara</div>
         <div class="colgrid" id="colgrid" role="group" aria-label="Wybierz kolor awatara"></div>
         <div class="row" id="photorow" hidden><span>Użyj zdjęcia z konta Google</span><button class="switch off" id="photoswitch" type="button" aria-label="Użyj zdjęcia z konta Google"><i></i></button></div>
-        <div class="sh">Konto i ranking</div>
-        <div class="acct" id="acct" hidden>
-          <div><b id="acname">Gość</b><small id="cloudmsg">Postęp zapisuje się na Twoim koncie Google.</small></div>
-        </div>
-        <button class="btn sec wide" id="cloudbtn" type="button" hidden>Wyloguj się</button>
-        <div class="row" id="rankrow" hidden><span>Pokaż mnie w rankingu</span><button class="switch" id="rankswitch" type="button" aria-label="Pokaż mnie w rankingu"><i></i></button></div>
         <div class="sh">Twoje rekordy</div>
         <div class="chips two" id="statsline"></div>
+        <div class="sh">Ranking</div>
+        <div class="row" id="rankrow" hidden><span>Pokaż mnie w rankingu graczy</span><button class="switch" id="rankswitch" type="button" aria-label="Pokaż mnie w rankingu"><i></i></button></div>
       </section>
 
-      <section class="pane" data-pane="goals">
+      <section class="pane" data-pane="goals" hidden>
         <div class="sh">Cele do zdobycia</div>
         <ul class="goals" id="goals"></ul>
         <div class="sh">Ta gra</div>
@@ -456,31 +497,34 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         <div class="themes" id="themes"></div>
       </section>
 
-      <section class="pane" data-pane="more" hidden>
-        <div class="sh">Ustawienia</div>
-        <div class="row"><span>Dźwięk</span><button class="switch" id="sound" type="button" aria-label="Wyłącz dźwięk" aria-pressed="true"><i></i></button></div>
-        <div class="sh">Pomoc</div>
-        <button class="btn sec wide" id="showintro" type="button">Jak grać? (krótki samouczek)</button>
-        <details>
-          <summary>Pełne zasady gry</summary>
-          <p>Przeciągnij palcem po sąsiednich kafelkach o tej samej wartości, także po skosie. Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Za łańcuchy od trzech kafelków dostajesz mnożnik punktów. Monety zdobywasz za cele i za każdą nową największą wartość w grze, a wydajesz je na cofnięcie ruchu, młotek, przetasowanie planszy i nowe motywy. Narzędzia odblokowujesz wynikiem: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze, a w nowej grze wraca do początkowej. Z czasem na planszy pojawiają się kamienie ✕, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od 4 kafelków obok nich. Gdy nie ma już żadnego ruchu, przegrywasz. Po 1 000 000 punktów plansza poszerza się o kolumnę z lewej i z prawej, wszystkie „2” zamieniają się w „4” i do końca tej gry już się nie pojawiają. Gra zapisuje się sama.</p>
-        </details>
+      <section class="pane" data-pane="settings" hidden>
+        <div class="sh">Dźwięk</div>
+        <div class="row"><span>Efekty dźwiękowe</span><button class="switch" id="sound" type="button" aria-label="Wyłącz dźwięk" aria-pressed="true"><i></i></button></div>
+        <div class="sh">Konto Google</div>
+        <div class="acct" id="acct" hidden>
+          <div><b id="acname">Konto</b><small id="cloudmsg">Postęp zapisuje się na Twoim koncie Google.</small></div>
+        </div>
+        <button class="btn sec wide" id="cloudbtn" type="button" hidden>Wyloguj się</button>
         <div class="sh" id="installhead">Aplikacja na telefon</div>
         <div id="installbox" class="pane">
           <button class="btn wide" id="installbtn" type="button">Zainstaluj aplikację</button>
           <p class="note" id="installnote"></p>
         </div>
-        <div class="sh">Gra</div>
-        <button class="btn danger wide" id="newgame" type="button">Nowa gra</button>
+      </section>
+
+      <section class="pane" data-pane="help" hidden>
+        <ol class="steps">
+          <li><span><b>Przeciągnij palcem</b> po sąsiednich kafelkach o tej samej liczbie, także po skosie.</span></li>
+          <li><span><b>Puść palec</b>, a łańcuch zleje się w jeden większy kafelek. Im dłuższy łańcuch, tym więcej punktów.</span></li>
+          <li><span><b>Zbieraj monety</b> za cele i rekordy, a potem wydaj je na narzędzia i nowe motywy.</span></li>
+        </ol>
+        <div class="sh">Zasady szczegółowo</div>
+        <details><summary>Łączenie i punkty</summary><p>Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Łańcuchy od trzech kafelków dają mnożnik punktów.</p></details>
+        <details><summary>Monety i narzędzia</summary><p>Monety dostajesz za cele i za każdą nową największą wartość w grze. Wydajesz je na narzędzia i motywy. Narzędzia odblokowujesz najlepszym wynikiem: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze i wraca do początkowej w nowej grze.</p></details>
+        <details><summary>Kamienie ✕</summary><p>Z czasem na planszy pojawiają się kamienie, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od czterech kafelków obok nich.</p></details>
+        <details><summary>Koniec gry i większa plansza</summary><p>Gdy nie ma już żadnego ruchu, gra się kończy, a planszę możesz jeszcze przetasować za monety. Po 1 000 000 punktów plansza poszerza się do siedmiu kolumn, wszystkie „2” zamieniają się w „4” i do końca tej gry już się nie pojawiają. Gra zapisuje się po każdym ruchu, także przy aktualizacjach.</p></details>
       </section>
     </div>
-    <nav class="nav" id="tabs" role="tablist" aria-label="Menu">
-      <button type="button" role="tab" data-tab="profile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg><span>Profil</span></button>
-      <button type="button" role="tab" data-tab="goals"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg><span>Cele</span></button>
-      <button type="button" role="tab" data-tab="rank"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0z"/><path d="M8 6H4v1a3 3 0 003 3M16 6h4v1a3 3 0 01-3 3M12 13v4M8 20h8"/></svg><span>Ranking</span></button>
-      <button type="button" role="tab" data-tab="themes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 003-3c0-6-4-11-8-11z"/></svg><span>Motywy</span></button>
-      <button type="button" role="tab" data-tab="more"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>Więcej</span></button>
-    </nav>
   </div>
 </div>
 
@@ -492,10 +536,12 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       <li><span><b>Puść palec</b>, a łańcuch zleje się w jeden większy kafelek. Im dłuższy łańcuch, tym więcej punktów.</span></li>
       <li><span><b>Zbieraj monety</b> za cele i rekordy, a potem wydaj je na narzędzia i nowe motywy.</span></li>
     </ol>
-    <p class="note">Wszystko znajdziesz w menu (przycisk ☰ na dole): profil, cele, ranking i motywy.</p>
+    <p class="note">Wszystko znajdziesz w menu (przycisk „Menu” na dole): profil, cele, ranking, motywy i ustawienia.</p>
     <button class="btn wide" id="introok" type="button">Zaczynamy</button>
   </div>
 </div>
+
+<div class="updbar" id="updbar" hidden role="status"><span>Dostępna nowa wersja gry. Postęp jest zapisany.</span><button id="updbtn" type="button">Zaktualizuj</button></div>
 
 <div class="gate" id="gate" data-state="loading" data-boot="1" role="dialog" aria-modal="true" aria-labelledby="gatetitle">
   <div class="gatebox">
@@ -736,18 +782,40 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   /* ---------- zapis ---------- */
   /* Każde konto Google ma własny zapis lokalny (klucz g2248:UID). Bez zalogowanego konta nic się nie zapisuje. */
   var storeKey = null;
+  var DATA_VER = 3; /* wersja formatu zapisu: zwiększaj przy zmianie struktury i dopisz migrację w loadStore */
   try { var hintUid = localStorage.getItem('g2248-uid'); if (hintUid) storeKey = 'g2248:' + hintUid; } catch (e) {}
   var S = loadStore();
   if (S.mode !== 'light' && S.mode !== 'dark') S.mode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  function isPristine(o) { return !o || (!o.best && !o.merges && !(o.saved && o.saved.score > 0)); }
+  /* Naprawia zapisaną planszę zamiast ją wyrzucać: złe wartości zaokrągla do potęgi dwójki. */
+  function fixSaved(sv) {
+    if (!sv || !Array.isArray(sv.vals)) return null;
+    var o = {}, k;
+    for (k in sv) o[k] = sv[k];
+    o.vals = sv.vals.map(function (row) {
+      return Array.isArray(row) ? row.map(function (v) { v = Math.round(+v); if (v === -1) return -1; return v >= 2 ? pow2ceil(v) : 2; }) : row;
+    });
+    o.score = Math.max(0, Math.round(+sv.score) || 0);
+    return o;
+  }
   function loadStore() {
     var d = { coins: 20, done: [], bestTile: 0, longest: 0, merges: 0, best: 0, sound: true, ts: 0, nick: '', inRank: true, saved: null, unl: [], scores: [], owned: ['rainbow'], palette: 'rainbow', mode: null, avatar: '🙂', avColor: '#5b4bd8', avPhoto: false, seen: false };
     try {
-      var raw = storeKey && localStorage.getItem(storeKey);
-      if (raw) {
-        var o = JSON.parse(raw);
-        for (var k in d) if (o[k] !== undefined) d[k] = o[k];
+      var raw = storeKey && localStorage.getItem(storeKey), o = null;
+      if (raw) o = JSON.parse(raw);
+      /* jednorazowe przejęcie starego wspólnego zapisu (sprzed kont) przez pierwsze konto na tym urządzeniu */
+      if (storeKey && isPristine(o)) {
+        var leg = localStorage.getItem('g2248');
+        if (leg && !localStorage.getItem('g2248-claimed')) { o = JSON.parse(leg); localStorage.setItem('g2248-claimed', storeKey); }
       }
+      /* kopiujemy WSZYSTKIE zapisane klucze (także nieznane tej wersji), a brakujące dostają wartości domyślne */
+      if (o && typeof o === 'object') for (var k in o) if (o[k] !== undefined) d[k] = o[k];
     } catch (e) {}
+    ['done', 'unl', 'owned', 'scores'].forEach(function (k) { if (!Array.isArray(d[k])) d[k] = k === 'owned' ? ['rainbow'] : []; });
+    ['coins', 'best', 'bestTile', 'longest', 'merges', 'ts'].forEach(function (k) { if (typeof d[k] !== 'number' || !isFinite(d[k]) || d[k] < 0) d[k] = k === 'coins' ? 20 : 0; });
+    /* punkty z trwającej gry liczą się do rekordu, nawet gdyby plansza nie dała się wczytać */
+    if (d.saved && typeof d.saved.score === 'number') d.best = Math.max(d.best, d.saved.score);
+    d.ver = DATA_VER;
     return d;
   }
   function save() { if (!window.__noStamp) S.ts = Date.now(); if (storeKey) { try { localStorage.setItem(storeKey, JSON.stringify(S)); } catch (e) {} } if (window.__cloudPush) window.__cloudPush(S); }
@@ -1044,7 +1112,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     resetRound();
   }
   function saveGame() {
-    S.saved = over ? null : { vals: vals(), score: score, maxEver: maxEver, moves: moves, gl: gameLongest, uses: uses };
+    S.saved = over ? null : { vals: vals(), score: score, maxEver: maxEver, moves: moves, gl: gameLongest, uses: uses, v: DATA_VER };
     save();
   }
 
@@ -1691,18 +1759,18 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   gate('hammer', btnHammer, toggleHammer);
   gate('shuffle', btnShuffle, doShuffle);
   rescueBtn.addEventListener('click', doShuffle);
-  var ngTimer = 0, ngBtn = $('newgame');
+  var ngTimer = 0, ngBtn = $('newgame'), ngLbl = ngBtn.querySelector('.lbl');
   ngBtn.addEventListener('click', function () {
     if (ngBtn.getAttribute('data-arm')) {
       clearTimeout(ngTimer);
       ngBtn.removeAttribute('data-arm');
-      ngBtn.textContent = 'Nowa gra';
+      ngLbl.textContent = 'Nowa gra';
       closeSheet();
       newGame();
     } else {
       ngBtn.setAttribute('data-arm', '1');
-      ngBtn.textContent = 'Na pewno? Dotknij ponownie';
-      ngTimer = setTimeout(function () { ngBtn.removeAttribute('data-arm'); ngBtn.textContent = 'Nowa gra'; }, 3000);
+      ngLbl.textContent = 'Obecna gra się zakończy. Dotknij ponownie';
+      ngTimer = setTimeout(function () { ngBtn.removeAttribute('data-arm'); ngLbl.textContent = 'Nowa gra'; }, 3500);
     }
   });
   $('again').addEventListener('click', newGame);
@@ -1714,30 +1782,38 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   });
 
   /* ---------- menu (arkusz od dołu) ---------- */
-  var sheetEl = $('sheet'), tabsEl = $('tabs'), lastTab = 'goals';
+  var sheetEl = $('sheet'), backBtn = $('backsheet'), curTab = 'home';
+  var TITLES = { home: 'Menu', profile: 'Mój profil', goals: 'Cele', rank: 'Ranking', themes: 'Motywy', settings: 'Ustawienia', help: 'Jak grać' };
+  function renderHome() {
+    setAv($('mav'), $('mav'));
+    $('mname').textContent = S.nick || 'Gracz';
+    $('msub').textContent = rankName() + ' · Rekord ' + fmtS(S.best);
+    $('msgoals').textContent = 'Wykonane: ' + Math.min(S.done.length, GOALS.length) + ' z ' + GOALS.length;
+    $('msthemes').textContent = 'Wygląd gry · ' + S.coins + ' monet';
+    $('mssettings').textContent = 'Dźwięk, konto, instalacja';
+  }
   function showTab(t) {
-    lastTab = t;
-    $('sheettitle').textContent = ({ profile: 'Mój profil', goals: 'Cele', rank: 'Ranking', themes: 'Motywy', more: 'Więcej' })[t] || 'Menu';
+    curTab = t;
+    $('sheettitle').textContent = TITLES[t] || 'Menu';
+    backBtn.hidden = t === 'home';
+    if (t === 'home') renderHome();
     if (t === 'profile') renderProfile();
     if (t === 'rank' && !$('rankglobal').hidden && window.__cloudRank) window.__cloudRank();
     Array.prototype.forEach.call(sheetEl.querySelectorAll('[data-pane]'), function (p) { p.hidden = p.getAttribute('data-pane') !== t; });
-    Array.prototype.forEach.call(tabsEl.querySelectorAll('button'), function (b) {
-      var on = b.getAttribute('data-tab') === t;
-      b.classList.toggle('on', on);
-      b.setAttribute('aria-selected', String(on));
-    });
+    sheetEl.querySelector('.sheetbody').scrollTop = 0;
   }
-  function openSheet(t) { clearHint(); showTab(t || lastTab); sheetEl.hidden = false; }
+  function openSheet(t) { clearHint(); showTab(t || 'home'); sheetEl.hidden = false; }
   function closeSheet() { sheetEl.hidden = true; scheduleHint(); }
-  $('menu').addEventListener('click', function () { openSheet(lastTab); });
+  $('menu').addEventListener('click', function () { openSheet('home'); });
   hintEl.addEventListener('click', function () { openSheet('goals'); });
   $('coinbtn').addEventListener('click', function () { openSheet('themes'); });
   $('avbtn').addEventListener('click', function () { openSheet('profile'); });
   $('closesheet').addEventListener('click', closeSheet);
-  sheetEl.addEventListener('click', function (e) { if (e.target === sheetEl) closeSheet(); });
-  tabsEl.addEventListener('click', function (e) {
-    var b = e.target.closest ? e.target.closest('button') : null;
-    if (b) showTab(b.getAttribute('data-tab'));
+  backBtn.addEventListener('click', function () { showTab('home'); });
+  sheetEl.addEventListener('click', function (e) {
+    if (e.target === sheetEl) { closeSheet(); return; }
+    var g = e.target.closest ? e.target.closest('[data-go]') : null;
+    if (g) showTab(g.getAttribute('data-go'));
   });
   var rankSeg = $('rankseg');
   rankSeg.addEventListener('click', function (e) {
@@ -1753,6 +1829,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   rankSw.addEventListener('click', function () { S.inRank = S.inRank === false; save(); syncRankUI(); });
   var AVATARS = ['🙂', '😎', '🤓', '🦊', '🐼', '🐸', '🦄', '🐙', '🚀', '⚡', '🔥', '🌈', '👑', '🎮', '🧩', '🍀'];
   var AVCOLORS = ['#5b4bd8', '#e5484d', '#f08c00', '#2ea44f', '#0ea5c6', '#d6409f', '#6b7289', '#1f2540'];
+  function rankName() { var rk = RANKS[0][1]; RANKS.forEach(function (x) { if (S.best >= x[0]) rk = x[1]; }); return rk; }
   var RANKS = [[0, 'Nowicjusz'], [500, 'Łącznik'], [2000, 'Znawca łańcuchów'], [5000, 'Mistrz'], [15000, 'Arcymistrz'], [100000, 'Legenda']];
   var gPhoto = null, avGrid = $('avgrid'), colGrid = $('colgrid'), photoSw = $('photoswitch');
   function setAv(el, bgEl) {
@@ -1791,7 +1868,6 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   function closeIntro() { introEl.hidden = true; if (!S.seen) { S.seen = true; save(); } scheduleHint(); }
   $('introok').addEventListener('click', closeIntro);
   introEl.addEventListener('click', function (e) { if (e.target === introEl) closeIntro(); });
-  $('showintro').addEventListener('click', function () { closeSheet(); openIntro(); });
 
   /* instalacja jako aplikacja (PWA) */
   var deferredInstall = null, instBtn = $('installbtn'), instNote = $('installnote'), instBox = $('installbox'), instHead = $('installhead');
@@ -1814,12 +1890,27 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   });
   renderInstall();
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-    window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+    var hadCtl = !!navigator.serviceWorker.controller;
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (reg) {
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) reg.update().catch(function () {}); });
+      }).catch(function () {});
+    });
+    navigator.serviceWorker.addEventListener('controllerchange', function () { if (hadCtl) $('updbar').hidden = false; });
   }
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheetEl.hidden) closeSheet(); });
-  showTab('goals');
+  /* aktualizacja nigdy nie przerywa gry: najpierw zapis, potem odświeżenie na życzenie gracza */
+  function doUpdate() {
+    if (busy) { setTimeout(doUpdate, 300); return; }
+    saveGame();
+    setTimeout(function () { location.reload(); }, 250);
+  }
+  $('updbtn').addEventListener('click', function () { $('updbtn').disabled = true; doUpdate(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sheetEl.hidden) { if (curTab === 'home') closeSheet(); else showTab('home'); } });
+  showTab('home');
 
   /* ---------- start ---------- */
+  window.__noStamp = true; /* start gry nie jest zmianą użytkownika: nie ruszamy znacznika czasu */
+  S.saved = fixSaved(S.saved);
   applyTheme(S.palette);
   fit(bestEl, fmtS(S.best));
   checkUnlocks(true);
@@ -1829,6 +1920,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   setCoins();
   if (validSaved(S.saved)) resume(S.saved); else newGame();
   if (!S.seen) openIntro();
+  window.__noStamp = false;
 
   /* ekran logowania: gra jest zasłonięta, dopóki konto Google nie jest zalogowane */
   var gateEl = $('gate'), gateBtn = $('gatebtn'), gateMsg = $('gatemsg');
@@ -1865,6 +1957,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       window.__noStamp = true; save(); window.__noStamp = false;
       if (S.seen && !introEl.hidden) { introEl.hidden = true; scheduleHint(); }
       applyTheme(S.palette); fit(bestEl, fmtS(S.best)); checkUnlocks(true); renderScores(); setSoundLabel(); renderGoals(); setCoins(); syncRankUI();
+      S.saved = fixSaved(S.saved);
       if (newer && validSaved(S.saved)) {
         window.__pend.forEach(clearTimeout); window.__pend = [];
         resetToasts(); appEl.classList.remove('expanding');

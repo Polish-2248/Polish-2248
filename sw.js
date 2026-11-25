@@ -1,5 +1,5 @@
 /* Service worker: gra działa offline po pierwszym uruchomieniu. */
-const VERSION = 'polish-2248-v5';
+const VERSION = 'polish-2248-v6';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'maskable-512.png', 'apple-touch-icon.png'];
 const CDN = ['fonts.googleapis.com', 'fonts.gstatic.com', 'www.gstatic.com'];
 
