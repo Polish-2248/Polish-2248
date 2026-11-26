@@ -520,7 +520,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         </ol>
         <div class="sh">Zasady szczegółowo</div>
         <details><summary>Łączenie i punkty</summary><p>Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Łańcuchy od trzech kafelków dają mnożnik punktów.</p></details>
-        <details><summary>Monety i narzędzia</summary><p>Monety dostajesz za cele i za każdą nową największą wartość w grze. Wydajesz je na narzędzia i motywy. Narzędzia odblokowujesz najlepszym wynikiem: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze i wraca do początkowej w nowej grze.</p></details>
+        <details><summary>Monety i narzędzia</summary><p>Monety dostajesz za cele i za każdą nową największą wartość w grze. Wydajesz je na narzędzia i motywy. Narzędzia odblokowujesz wynikiem w bieżącej grze: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. W każdej nowej grze są znów zablokowane. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze i wraca do początkowej w nowej grze.</p></details>
         <details><summary>Kamienie ✕</summary><p>Z czasem na planszy pojawiają się kamienie, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od czterech kafelków obok nich.</p></details>
         <details><summary>Koniec gry i większa plansza</summary><p>Gdy nie ma już żadnego ruchu, gra się kończy, a planszę możesz jeszcze przetasować za monety. Po 1 000 000 punktów plansza poszerza się do siedmiu kolumn, wszystkie „2” zamieniają się w „4” i do końca tej gry już się nie pojawiają. Gra zapisuje się po każdym ruchu, także przy aktualizacjach.</p></details>
       </section>
@@ -1085,7 +1085,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       for (var r = 0; r < ROWS; r++) { var row = []; for (var c = 0; c < COLS; c++) row.push(randomValue(8)); vs.push(row); }
     } while (!movesIn(vs));
     buildFrom(vs, true);
-    score = 0; snap = null; moves = 0; gameLongest = 0; uses = { undo: 0, hammer: 0, shuffle: 0 }; stoneDue = false; maxEver = maxValue();
+    score = 0; snap = null; moves = 0; gameLongest = 0; uses = { undo: 0, hammer: 0, shuffle: 0 }; gUnl = []; stoneDue = false; maxEver = maxValue();
     svgEl.style.opacity = 1;
     resetRound();
     saveGame();
@@ -1106,13 +1106,13 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   function resume(s) {
     setCols(s.vals[0].length, true);
     buildFrom(s.vals[0].length >= 7 ? s.vals.map(function (row) { return row.map(function (v) { return v === 2 ? 4 : v; }); }) : s.vals, false);
-    score = s.score; snap = null; uses = s.uses || { undo: 0, hammer: 0, shuffle: 0 }; moves = s.moves || 0; gameLongest = s.gl || 0;
+    score = s.score; snap = null; gUnl = Array.isArray(s.unl) ? s.unl.slice() : []; checkUnlocks(true); uses = s.uses || { undo: 0, hammer: 0, shuffle: 0 }; moves = s.moves || 0; gameLongest = s.gl || 0;
     maxEver = Math.max(s.maxEver || 8, maxValue());
     svgEl.style.opacity = 1;
     resetRound();
   }
   function saveGame() {
-    S.saved = over ? null : { vals: vals(), score: score, maxEver: maxEver, moves: moves, gl: gameLongest, uses: uses, v: DATA_VER };
+    S.saved = over ? null : { vals: vals(), score: score, maxEver: maxEver, moves: moves, gl: gameLongest, uses: uses, unl: gUnl, v: DATA_VER };
     save();
   }
 
@@ -1301,8 +1301,8 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     statsLineEl.innerHTML = chipH(fmtS(S.best), 'Najwyższy wynik') + chipH(S.bestTile ? fmtT(S.bestTile) : '–', 'Najlepszy kafelek') +
       chipH(S.longest || '–', 'Rekordowy łańcuch (cała historia)') + chipH(S.merges, 'Połączeń łącznie');
     toolsEl.innerHTML = ['undo', 'hammer', 'shuffle'].map(function (id) {
-      var ok = S.unl.indexOf(id) >= 0, p = Math.min(100, S.best / UNLOCK[id] * 100);
-      return '<li class="' + (ok ? 'ok' : '') + '"><span>' + TNAME[id] + '</span><small>' + (ok ? 'Odblokowane ✓ · ' + cost(id) + ' monet' : '🔒 ' + fmtS(S.best) + ' / ' + UNLOCK[id] + ' pkt') + '</small>' + (ok ? '' : '<div class="bar"><i style="width:' + p + '%"></i></div>') + '</li>';
+      var ok = !isLocked(id), p = Math.min(100, score / UNLOCK[id] * 100);
+      return '<li class="' + (ok ? 'ok' : '') + '"><span>' + TNAME[id] + '</span><small>' + (ok ? 'Odblokowane ✓ · ' + cost(id) + ' monet' : '🔒 ' + fmtS(score) + ' / ' + UNLOCK[id] + ' pkt w tej grze') + '</small>' + (ok ? '' : '<div class="bar"><i style="width:' + p + '%"></i></div>') + '</li>';
     }).join('');
   }
   function renderHint() {
@@ -1324,7 +1324,9 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     miniWrap.hidden = false;
   }
 
-  function isLocked(id) { return S.unl.indexOf(id) < 0; }
+  /* Narzędzia odblokowuje wynik w BIEŻĄCEJ grze. Każda nowa gra zaczyna z zablokowanymi. */
+  var gUnl = [];
+  function isLocked(id) { return gUnl.indexOf(id) < 0; }
   function renderTools() {
     var lock = busy || over;
     [['undo', btnUndo, lock || !snap || S.coins < cost('undo')], ['hammer', btnHammer, !hammer && (lock || S.coins < cost('hammer'))], ['shuffle', btnShuffle, lock || S.coins < cost('shuffle')]].forEach(function (d) {
@@ -1339,8 +1341,8 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   }
   function checkUnlocks(silent) {
     Object.keys(UNLOCK).forEach(function (id) {
-      if (S.unl.indexOf(id) >= 0 || S.best < UNLOCK[id]) return;
-      S.unl.push(id); save();
+      if (gUnl.indexOf(id) >= 0 || score < UNLOCK[id]) return;
+      gUnl.push(id);
       if (silent) return;
       renderTools(); bumpEl($(id), 'unlocking', 1400);
       toast('Odblokowano: ' + TNAME[id] + '!', 'green', 2600); play('goal');
@@ -1348,7 +1350,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   }
   function gate(id, btn, fn) {
     btn.addEventListener('click', function () {
-      if (isLocked(id)) { bumpEl(btn, 'nope', 360); toast('🔒 ' + TNAME[id] + ' odblokuje się przy ' + UNLOCK[id] + ' pkt', 'purple', 2200); return; }
+      if (isLocked(id)) { bumpEl(btn, 'nope', 360); toast('🔒 ' + TNAME[id] + ' odblokuje się w tej grze przy ' + UNLOCK[id] + ' pkt', 'purple', 2200); return; }
       fn();
     });
   }
