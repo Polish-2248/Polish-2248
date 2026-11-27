@@ -191,6 +191,8 @@ svg.path polyline { fill: none; stroke: var(--line); stroke-width: 0.13; stroke-
 .bar i { display: block; height: 100%; border-radius: 4px; background: var(--acc1); transition: width 0.5s; }
 .gnum { font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: right; }
 .gdone { color: var(--muted); font-size: 0.85rem; }
+.goals li.done { opacity: 0.6; }
+.goals li.gnote { display: block; background: none; padding: 2px 4px; box-shadow: none; backdrop-filter: none; }
 .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .chip { background: var(--panel); border-radius: 12px; padding: 10px 6px; text-align: center; }
 .chip b { display: block; font-family: var(--num); font-weight: 800; font-size: 1.2rem; font-variant-numeric: tabular-nums; }
@@ -476,7 +478,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       </section>
 
       <section class="pane" data-pane="goals" hidden>
-        <div class="sh">Cele do zdobycia</div>
+        <div class="sh">Cele na dziś</div>
         <ul class="goals" id="goals"></ul>
         <div class="sh">Ta gra</div>
         <div class="chips" id="nowline"></div>
@@ -520,7 +522,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         </ol>
         <div class="sh">Zasady szczegółowo</div>
         <details><summary>Łączenie i punkty</summary><p>Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Łańcuchy od trzech kafelków dają mnożnik punktów.</p></details>
-        <details><summary>Monety i narzędzia</summary><p>Monety dostajesz za cele i za każdą nową największą wartość w grze. Wydajesz je na narzędzia i motywy. Narzędzia odblokowujesz wynikiem w bieżącej grze: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. W każdej nowej grze są znów zablokowane. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze i wraca do początkowej w nowej grze.</p></details>
+        <details><summary>Monety i narzędzia</summary><p>Monety dostajesz za codzienne cele (odnawiają się o północy czasu polskiego) oraz za każdą nową wartość kafelka. Nagrodę za daną wartość dostajesz raz na konto, także za wartości pominięte po drodze. Wydajesz je na narzędzia i motywy. Narzędzia odblokowujesz wynikiem w bieżącej grze: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. W każdej nowej grze są znów zablokowane. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze i wraca do początkowej w nowej grze.</p></details>
         <details><summary>Kamienie ✕</summary><p>Z czasem na planszy pojawiają się kamienie, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od czterech kafelków obok nich.</p></details>
         <details><summary>Koniec gry i większa plansza</summary><p>Gdy nie ma już żadnego ruchu, gra się kończy, a planszę możesz jeszcze przetasować za monety. Po 1 000 000 punktów plansza poszerza się do siedmiu kolumn, wszystkie „2” zamieniają się w „4” i do końca tej gry już się nie pojawiają. Gra zapisuje się po każdym ruchu, także przy aktualizacjach.</p></details>
       </section>
@@ -562,26 +564,76 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   /* Cena rośnie o 50% przy każdym użyciu w danej grze i wraca do bazowej w nowej grze. */
   var BASE = { undo: 30, hammer: 40, shuffle: 60 }, uses = { undo: 0, hammer: 0, shuffle: 0 };
   function cost(id) { return Math.round(BASE[id] * (1 + 0.5 * uses[id]) / 5) * 5; }
-  var GOALS = [
-    { id: 'c4', type: 'chain', n: 4, label: 'Połącz łańcuch z 4 kafelków', s: 'Łańcuch ×4', r: 10 },
-    { id: 't32', type: 'tile', n: 32, label: 'Zrób kafelek 32', s: 'Kafelek 32', r: 10 },
-    { id: 'm25', type: 'merges', n: 25, label: 'Wykonaj 25 połączeń', s: '25 połączeń', r: 10 },
-    { id: 't64', type: 'tile', n: 64, label: 'Zrób kafelek 64', s: 'Kafelek 64', r: 20 },
-    { id: 's500', type: 'score', n: 500, label: 'Zdobądź 500 punktów w jednej grze', s: '500 punktów', r: 15 },
-    { id: 'c6', type: 'chain', n: 6, label: 'Połącz łańcuch z 6 kafelków', s: 'Łańcuch ×6', r: 20 },
-    { id: 't128', type: 'tile', n: 128, label: 'Zrób kafelek 128', s: 'Kafelek 128', r: 30 },
-    { id: 'm100', type: 'merges', n: 100, label: 'Wykonaj 100 połączeń', s: '100 połączeń', r: 25 },
-    { id: 's2000', type: 'score', n: 2000, label: 'Zdobądź 2000 punktów w jednej grze', s: '2000 punktów', r: 30 },
-    { id: 'c8', type: 'chain', n: 8, label: 'Połącz łańcuch z 8 kafelków', s: 'Łańcuch ×8', r: 35 },
-    { id: 't256', type: 'tile', n: 256, label: 'Zrób kafelek 256', s: 'Kafelek 256', r: 50 },
-    { id: 's5000', type: 'score', n: 5000, label: 'Zdobądź 5000 punktów w jednej grze', s: '5000 punktów', r: 50 },
-    { id: 'm300', type: 'merges', n: 300, label: 'Wykonaj 300 połączeń', s: '300 połączeń', r: 50 },
-    { id: 't512', type: 'tile', n: 512, label: 'Zrób kafelek 512', s: 'Kafelek 512', r: 80 },
-    { id: 'c10', type: 'chain', n: 10, label: 'Połącz łańcuch z 10 kafelków', s: 'Łańcuch ×10', r: 60 },
-    { id: 't1024', type: 'tile', n: 1024, label: 'Zrób kafelek 1024', s: 'Kafelek 1024', r: 120 },
-    { id: 's15000', type: 'score', n: 15000, label: 'Zdobądź 15000 punktów w jednej grze', s: '15000 punktów', r: 100 },
-    { id: 't2048', type: 'tile', n: 2048, label: 'Zrób kafelek 2048', s: 'Kafelek 2048', r: 250 }
-  ];
+  /* Cele dzienne: każdego dnia (wg daty w Polsce) losowane są 3 cele o różnych typach, od łatwiejszego do trudniejszego.
+     Zestaw zależy tylko od daty, więc jest taki sam na każdym urządzeniu tego samego konta. */
+  var DAILY_TYPES = ['chain', 'tile', 'merges', 'score'];
+  var DAILY_POOL = {
+    chain: [{ n: 4, r: 10 }, { n: 5, r: 15 }, { n: 6, r: 25 }, { n: 8, r: 40 }],
+    tile: [{ n: 32, r: 10 }, { n: 64, r: 20 }, { n: 128, r: 35 }, { n: 256, r: 55 }],
+    merges: [{ n: 20, r: 10 }, { n: 40, r: 20 }, { n: 80, r: 30 }, { n: 150, r: 45 }],
+    score: [{ n: 500, r: 15 }, { n: 1000, r: 25 }, { n: 2000, r: 35 }, { n: 4000, r: 50 }]
+  };
+  function goalText(g) {
+    switch (g.type) {
+      case 'tile': return { label: 'Zrób dziś kafelek ' + g.n, s: 'Kafelek ' + g.n };
+      case 'chain': return { label: 'Połącz dziś łańcuch z ' + g.n + ' kafelków', s: 'Łańcuch ×' + g.n };
+      case 'merges': return { label: 'Wykonaj dziś ' + g.n + ' połączeń', s: g.n + ' połączeń' };
+      default: return { label: 'Zdobądź dziś ' + g.n + ' punktów', s: g.n + ' punktów' };
+    }
+  }
+  /* Data kalendarzowa w Polsce (RRRR-MM-DD). Zmiana dnia następuje o 00:00 czasu polskiego, niezależnie od strefy urządzenia. */
+  function polandDay(d) {
+    d = d || new Date();
+    try {
+      var out = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Warsaw', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(out)) return out;
+    } catch (e) {}
+    /* awaryjnie (bez Intl): czas środkowoeuropejski, letni od ostatniej niedzieli marca do ostatniej niedzieli października (01:00 UTC) */
+    var y = d.getUTCFullYear();
+    function lastSun(m) { var t = new Date(Date.UTC(y, m + 1, 0, 1)); return Date.UTC(y, m, t.getUTCDate() - t.getUTCDay(), 1); }
+    var off = (d.getTime() >= lastSun(2) && d.getTime() < lastSun(9)) ? 2 : 1, w = new Date(d.getTime() + off * 3600000);
+    return w.getUTCFullYear() + '-' + ('0' + (w.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + w.getUTCDate()).slice(-2);
+  }
+  function seededRng(str) {
+    var h = 2166136261, i;
+    for (i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+    var a = h >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function newDaily(day) {
+    var rnd = seededRng('g2248-daily-' + day), types = DAILY_TYPES.slice(), i, j, t;
+    for (i = types.length - 1; i > 0; i--) { j = Math.floor(rnd() * (i + 1)); t = types[i]; types[i] = types[j]; types[j] = t; }
+    var goals = types.slice(0, 3).map(function (ty, k) {
+      var e = DAILY_POOL[ty][k + Math.floor(rnd() * 2)]; /* 1. cel łatwy, 2. średni, 3. trudny */
+      return { id: ty + e.n, type: ty, n: e.n, r: e.r };
+    });
+    return { day: day, goals: goals, done: [], chain: 0, tile: 0, merges: 0, pts: 0 };
+  }
+  function nonNeg(x) { return typeof x === 'number' && isFinite(x) && x >= 0 ? x : 0; }
+  /* Sprawdza zapis celów dziennych (z pamięci lub z chmury); zwraca czystą kopię albo null. */
+  function sanitizeDaily(o) {
+    if (!o || typeof o !== 'object' || typeof o.day !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(o.day) || !Array.isArray(o.goals) || !o.goals.length) return null;
+    var goals = [], ids = {};
+    for (var i = 0; i < o.goals.length; i++) {
+      var g = o.goals[i];
+      if (!g || typeof g.id !== 'string' || DAILY_TYPES.indexOf(g.type) < 0 || typeof g.n !== 'number' || !(g.n > 0) || typeof g.r !== 'number' || !(g.r >= 0) || ids[g.id]) return null;
+      ids[g.id] = 1; goals.push({ id: g.id, type: g.type, n: g.n, r: g.r });
+    }
+    var done = (Array.isArray(o.done) ? o.done : []).filter(function (id, k, arr) { return ids[id] && arr.indexOf(id) === k; });
+    return { day: o.day, goals: goals, done: done, chain: nonNeg(o.chain), tile: nonNeg(o.tile), merges: nonNeg(o.merges), pts: nonNeg(o.pts) };
+  }
+  /* Nagrody za wartości kafelków: raz na konto za każdą potęgę dwójki od 16 wzwyż (S.tileRw przechowuje wykładniki). */
+  var REW_MIN_EXP = 4;
+  function tileExpsUpTo(v) {
+    var out = [], top = v >= 2 ? Math.min(200, Math.floor(Math.log2(v) + 1e-9)) : 0;
+    for (var k = REW_MIN_EXP; k <= top; k++) out.push(k);
+    return out;
+  }
   var ICONS = {
     tile: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>',
     chain: '<svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M8.5 12h7"/></svg>',
@@ -785,6 +837,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   var DATA_VER = 3; /* wersja formatu zapisu: zwiększaj przy zmianie struktury i dopisz migrację w loadStore */
   try { var hintUid = localStorage.getItem('g2248-uid'); if (hintUid) storeKey = 'g2248:' + hintUid; } catch (e) {}
   var S = loadStore();
+  ensureDay(); /* cele dzienne muszą istnieć, zanim cokolwiek je narysuje */
   if (S.mode !== 'light' && S.mode !== 'dark') S.mode = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
   function isPristine(o) { return !o || (!o.best && !o.merges && !(o.saved && o.saved.score > 0)); }
   /* Naprawia zapisaną planszę zamiast ją wyrzucać: złe wartości zaokrągla do potęgi dwójki. */
@@ -799,7 +852,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     return o;
   }
   function loadStore() {
-    var d = { coins: 20, done: [], bestTile: 0, longest: 0, merges: 0, best: 0, sound: true, ts: 0, nick: '', inRank: true, saved: null, unl: [], scores: [], owned: ['rainbow'], palette: 'rainbow', mode: null, avatar: '🙂', avColor: '#5b4bd8', avPhoto: false, seen: false };
+    var d = { coins: 20, done: [], bestTile: 0, longest: 0, merges: 0, best: 0, sound: true, ts: 0, nick: '', inRank: true, saved: null, unl: [], scores: [], owned: ['rainbow'], palette: 'rainbow', mode: null, avatar: '🙂', avColor: '#5b4bd8', avPhoto: false, seen: false, daily: null, tileRw: null };
     try {
       var raw = storeKey && localStorage.getItem(storeKey), o = null;
       if (raw) o = JSON.parse(raw);
@@ -813,6 +866,10 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     } catch (e) {}
     ['done', 'unl', 'owned', 'scores'].forEach(function (k) { if (!Array.isArray(d[k])) d[k] = k === 'owned' ? ['rainbow'] : []; });
     ['coins', 'best', 'bestTile', 'longest', 'merges', 'ts'].forEach(function (k) { if (typeof d[k] !== 'number' || !isFinite(d[k]) || d[k] < 0) d[k] = k === 'coins' ? 20 : 0; });
+    d.daily = sanitizeDaily(d.daily);
+    /* zapis sprzed nagród za pominięte wartości: wszystko do dotychczasowego rekordu kafelka uznajemy za już odebrane */
+    if (!Array.isArray(d.tileRw)) d.tileRw = tileExpsUpTo(d.bestTile);
+    d.tileRw = d.tileRw.filter(function (k, i, a) { return typeof k === 'number' && k >= REW_MIN_EXP && k <= 200 && a.indexOf(k) === i; });
     /* punkty z trwającej gry liczą się do rekordu, nawet gdyby plansza nie dała się wczytać */
     if (d.saved && typeof d.saved.score === 'number') d.best = Math.max(d.best, d.saved.score);
     d.ver = DATA_VER;
@@ -1248,29 +1305,52 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   function addCoins(n) { S.coins += n; setCoins(); bumpEl(coinsEl, 'bump', 220); save(); }
 
   function progressOf(g) {
+    var d = S.daily;
     switch (g.type) {
-      case 'tile': return S.bestTile;
-      case 'chain': return S.longest;
-      case 'merges': return S.merges;
-      default: return S.best;
+      case 'tile': return d.tile;
+      case 'chain': return d.chain;
+      case 'merges': return d.merges;
+      default: return d.pts;
     }
   }
-  function activeGoals() { return GOALS.filter(function (g) { return S.done.indexOf(g.id) < 0; }).slice(0, 3); }
+  function activeGoals() { return S.daily.goals.filter(function (g) { return S.daily.done.indexOf(g.id) < 0; }); }
+
+  /* Zmiana dnia: gdy data w Polsce jest inna niż data zapisanych celów, startuje nowy zestaw z zerowym postępem.
+     Zwraca true, gdy zestaw został wymieniony. */
+  function ensureDay() {
+    var today = polandDay();
+    if (S.daily && S.daily.day === today) return false;
+    S.daily = newDaily(today);
+    return true;
+  }
+  function tickDay() {
+    var had = !!S.daily;
+    if (!ensureDay()) return;
+    save();
+    renderGoals();
+    renderHint();
+    if (!sheetEl.hidden && curTab === 'home') renderHome();
+    if (had) toast('Nowy dzień, nowe cele!', 'green', 2400);
+  }
+  /* Postęp dzisiejszych celów; wywoływane po każdym połączeniu. */
+  function dayAdd(n, target, gain) {
+    ensureDay();
+    var d = S.daily;
+    d.merges++; d.pts += gain;
+    if (n > d.chain) d.chain = n;
+    if (target > d.tile) d.tile = target;
+  }
 
   function checkGoals() {
-    var any = false;
-    for (;;) {
-      var hit = activeGoals().filter(function (g) { return progressOf(g) >= g.n; });
-      if (!hit.length) break;
+    ensureDay();
+    var d = S.daily, hit = activeGoals().filter(function (g) { return progressOf(g) >= g.n; });
+    if (hit.length) {
       var names = [], sum = 0;
       hit.forEach(function (g) {
-        S.done.push(g.id);
-        S.coins += g.r; sum += g.r; names.push(g.s);
-        any = true;
+        d.done.push(g.id); /* najpierw znacznik „odebrano”, potem monety: ten sam cel nie da nagrody drugi raz tego dnia */
+        S.coins += g.r; sum += g.r; names.push(goalText(g).s);
       });
       toast(hit.length > 1 ? 'Cele wykonane: ' + names.join(', ') : 'Cel wykonany: ' + names[0], 'green', 2600, sum);
-    }
-    if (any) {
       play('goal');
       setTimeout(function () { play('coin'); }, 250);
       setCoins();
@@ -1282,14 +1362,14 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   }
 
   function renderGoals() {
-    var act = activeGoals(), html = '';
-    if (!act.length) html = '<li><span class="gdone">Wszystkie cele wykonane. Gratulacje!</span></li>';
-    act.forEach(function (g) {
-      var p = Math.min(progressOf(g), g.n);
-      html += '<li><span class="gi">' + ICONS[g.type] + '</span><span class="glabel">' + g.label + '</span>' +
-        '<span class="rw">+' + g.r + '<i class="coin"></i></span>' +
+    var d = S.daily, html = '';
+    d.goals.forEach(function (g) {
+      var done = d.done.indexOf(g.id) >= 0, p = done ? g.n : Math.min(progressOf(g), g.n);
+      html += '<li' + (done ? ' class="done"' : '') + '><span class="gi">' + ICONS[g.type] + '</span><span class="glabel">' + goalText(g).label + '</span>' +
+        '<span class="rw">' + (done ? '✓' : '+' + g.r + '<i class="coin"></i>') + '</span>' +
         '<div class="gbar"><div class="bar"><i style="width:' + (p / g.n * 100) + '%"></i></div><span class="gnum">' + p + ' / ' + g.n + '</span></div></li>';
     });
+    html += '<li class="gnote"><span class="gdone">' + (activeGoals().length ? '' : 'Wszystkie dzisiejsze cele wykonane. Gratulacje! ') + 'Nowe cele pojawią się o północy (czas polski).</span></li>';
     goalsEl.innerHTML = html;
     renderStats();
   }
@@ -1313,13 +1393,13 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     }
     var act = activeGoals();
     if (!act.length) {
-      goalTextEl.textContent = 'Połącz kafelki o tej samej wartości';
+      goalTextEl.textContent = 'Dzisiejsze cele wykonane ✓';
       miniWrap.hidden = true;
       return;
     }
     var g = act.reduce(function (a, b) { return progressOf(b) / b.n > progressOf(a) / a.n ? b : a; });
     var p = Math.min(progressOf(g), g.n);
-    goalTextEl.textContent = 'Cel: ' + g.s + ' · ' + p + '/' + g.n;
+    goalTextEl.textContent = 'Cel: ' + goalText(g).s + ' · ' + p + '/' + g.n;
     miniBar.style.width = (p / g.n * 100) + '%';
     miniWrap.hidden = false;
   }
@@ -1588,16 +1668,22 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       if (n > S.longest) S.longest = n;
       if (n > gameLongest) gameLongest = n;
       if (target > S.bestTile) S.bestTile = target;
+      dayAdd(n, target, gain);
       if (score > S.best) { S.best = score; fit(bestEl, fmtS(S.best)); }
       floatText(last, '+' + fmtS(gain), n >= 3);
       var col = colorsFor(target);
       var big = isRecord && !reduce;
-      if (isRecord) {
-        var bonus = Math.round(Math.log2(target)) * 2;
-        toast('Nowa największa wartość: ' + fmtT(target), 'gold', 2300, bonus);
+      /* Nagroda za każdą jeszcze nieodebraną wartość do osiągniętej włącznie (także pominiętą); każda wartość tylko raz na konto. */
+      var newVals = claimTiles(target);
+      if (newVals.length) {
+        var bonus = 0;
+        newVals.forEach(function (v) { bonus += Math.round(Math.log2(v)) * 2; });
+        toast(newVals.length === 1 ? 'Nowa największa wartość: ' + fmtT(newVals[0]) : 'Nowe wartości: ' + (newVals.length <= 4 ? newVals.map(fmtT).join(', ') : fmtT(newVals[0]) + ' … ' + fmtT(newVals[newVals.length - 1]) + ' (' + newVals.length + ')'), 'gold', 2300, bonus);
         addCoins(bonus);
-        if (retire) setTimeout(function () { retireToast(retire); }, 800);
+      } else if (isRecord) {
+        toast('Nowa największa wartość: ' + fmtT(target), 'gold', 2300);
       }
+      if (isRecord && retire) setTimeout(function () { retireToast(retire); }, 800);
       if (big) {
         bumpEl(last.el, 'legend', 1400);
         burstAt(last, { ring: '#ffd666', colors: ['#ffd666', '#ffb02e', '#fff3c4', '#ff7ab8'], n: 18, dist: [22, 38] });
@@ -1614,6 +1700,13 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       if (COLS === 5 && score >= EXPAND_AT) setTimeout(function () { expandBoard(settle); }, 500);
       else setTimeout(settle, big ? 450 : 140);
     }, removed.length * step + flyMs + 30);
+  }
+
+  /* Odbiera nagrody za wartości od 16 do target, których to konto jeszcze nie dostało. Zwraca nowo odebrane wartości (rosnąco). */
+  function claimTiles(target) {
+    var out = [], top = Math.min(200, Math.round(Math.log2(target)));
+    for (var k = REW_MIN_EXP; k <= top; k++) if (S.tileRw.indexOf(k) < 0) { S.tileRw.push(k); out.push(Math.pow(2, k)); }
+    return out;
   }
 
   function crackStones(ch) {
@@ -1790,7 +1883,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     setAv($('mav'), $('mav'));
     $('mname').textContent = S.nick || 'Gracz';
     $('msub').textContent = rankName() + ' · Rekord ' + fmtS(S.best);
-    $('msgoals').textContent = 'Wykonane: ' + Math.min(S.done.length, GOALS.length) + ' z ' + GOALS.length;
+    $('msgoals').textContent = 'Dziś: ' + S.daily.done.length + ' z ' + S.daily.goals.length;
     $('msthemes').textContent = 'Wygląd gry · ' + S.coins + ' monet';
     $('mssettings').textContent = 'Dźwięk, konto, instalacja';
   }
@@ -1913,6 +2006,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   /* ---------- start ---------- */
   window.__noStamp = true; /* start gry nie jest zmianą użytkownika: nie ruszamy znacznika czasu */
   S.saved = fixSaved(S.saved);
+  ensureDay();
   applyTheme(S.palette);
   fit(bestEl, fmtS(S.best));
   checkUnlocks(true);
@@ -1923,6 +2017,12 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   if (validSaved(S.saved)) resume(S.saved); else newGame();
   if (!S.seen) openIntro();
   window.__noStamp = false;
+
+  /* wykrywanie zmiany dnia: co kilka sekund oraz przy powrocie do aplikacji */
+  setInterval(tickDay, 15000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) tickDay(); });
+  window.addEventListener('focus', tickDay);
+  window.addEventListener('pageshow', tickDay);
 
   /* ekran logowania: gra jest zasłonięta, dopóki konto Google nie jest zalogowane */
   var gateEl = $('gate'), gateBtn = $('gatebtn'), gateMsg = $('gatemsg');
@@ -1952,6 +2052,18 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       function uni(a, b) { var o = (a || []).slice(); (b || []).forEach(function (x) { if (o.indexOf(x) < 0) o.push(x); }); return o; }
       S.seen = S.seen || !!c.seen;
       S.done = uni(S.done, c.done); S.unl = uni(S.unl, c.unl); S.owned = uni(S.owned, c.owned);
+      /* nagrody za wartości: suma odebranych; zapis z chmury sprzed tej funkcji liczy wszystko do swojego rekordu kafelka jako odebrane */
+      S.tileRw = uni(S.tileRw, Array.isArray(c.tileRw) ? c.tileRw : tileExpsUpTo(c.bestTile)).filter(function (k) { return typeof k === 'number' && k >= REW_MIN_EXP && k <= 200; });
+      /* cele dzienne: bierzemy nowszy dzień (nie z przyszłości); ten sam dzień łączymy tak, by nic nie zostało odebrane dwa razy */
+      var cd = sanitizeDaily(c.daily), today = polandDay();
+      if (cd && cd.day <= today) {
+        if (!S.daily || cd.day > S.daily.day) S.daily = cd;
+        else if (cd.day === S.daily.day) {
+          S.daily.done = uni(S.daily.done, cd.done.filter(function (id) { return S.daily.goals.some(function (g) { return g.id === id; }); }));
+          ['chain', 'tile', 'merges', 'pts'].forEach(function (k) { S.daily[k] = Math.max(S.daily[k], cd[k]); });
+        }
+      }
+      ensureDay();
       var seen = {};
       S.scores = (S.scores || []).concat(c.scores || []).filter(function (x) { var k = x.s + '_' + x.d; if (seen[k]) return false; seen[k] = 1; return true; })
         .sort(function (a, b) { return b.s - a.s; }).slice(0, 10);
