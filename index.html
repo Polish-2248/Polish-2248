@@ -379,6 +379,71 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 .updbar { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 60; max-width: 416px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--fg); color: var(--bg); border-radius: 14px; padding: 10px 12px 10px 14px; font: 600 0.85rem var(--txt); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); }
 .updbar button { border: 0; border-radius: 10px; background: var(--acc1); color: #fff; font: 700 0.82rem var(--txt); padding: 9px 13px; cursor: pointer; }
 .updbar button:disabled { opacity: 0.6; }
+
+/* Wyzwania */
+.mtile.wide { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 12px; min-height: 0; }
+.mtile.wide .mi { margin: 0; flex: none; }
+.mtxt2 { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.chlist { display: flex; flex-direction: column; gap: 12px; }
+.chser { background: var(--panel); border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.chser.locked .chrow { opacity: 0.55; }
+.chtop { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.chtop b { font-size: 1rem; font-weight: 800; }
+.chcount { font: 800 0.76rem var(--num); color: #fff; background: var(--acc1); padding: 3px 9px; border-radius: 6px; white-space: nowrap; }
+.chcount.full { background: #1f9d55; }
+.chdesc { margin: 0; color: var(--muted); font-size: 0.76rem; line-height: 1.4; }
+.chlock { margin: 0; font-size: 0.78rem; font-weight: 700; color: var(--fg); background: var(--panel2); border-radius: 10px; padding: 8px 10px; }
+.chbonus { margin: 0; font-size: 0.76rem; color: var(--muted); }
+.chbonus b { color: var(--fg); }
+.chrow { background: var(--panel2); border-radius: 12px; padding: 10px; display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; align-items: center; }
+.chrow.done { box-shadow: inset 3px 0 0 #1f9d55; }
+.chrow .chtxt b { display: block; font-size: 0.86rem; font-weight: 700; line-height: 1.3; }
+.chrow .chtxt small { display: block; margin-top: 2px; color: var(--muted); font-size: 0.72rem; line-height: 1.4; }
+.chd { display: inline-block; font: 800 0.6rem var(--txt); letter-spacing: 0.06em; text-transform: uppercase; color: #fff; border-radius: 5px; padding: 2px 6px; margin-bottom: 4px; }
+.chd.d1 { background: #1f9d55; } .chd.d2 { background: #2f80ed; } .chd.d3 { background: #e08a00; } .chd.d4 { background: #d6336c; }
+.chact { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.chok { color: #1f9d55; font-weight: 800; font-size: 0.74rem; white-space: nowrap; }
+.chbtn { border: 0; border-radius: 10px; padding: 8px 12px; font: 700 0.78rem var(--txt); color: #fff; background: var(--acc1); cursor: pointer; min-width: 92px; }
+.chbtn.sec { background: var(--panel); color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--muted); }
+.chbtn:disabled { opacity: 0.4; cursor: default; }
+.chbtn:focus-visible { outline: 3px solid var(--acc1); outline-offset: 2px; }
+.chnote { margin: 0 2px; color: var(--muted); font-size: 0.74rem; line-height: 1.4; }
+#chexit { display: none; }
+.chmode #chexit { display: flex; }
+.chmode #undo, .chmode #hammer, .chmode #shuffle, .chmode #newgame { display: none; }
+.chmode .dock { grid-template-columns: repeat(2, 1fr); }
+.chmode .frame { box-shadow: 0 0 0 3px var(--acc1); border-radius: 18px; }
+#chover p { max-width: 280px; line-height: 1.45; }
+#chover .btn { min-width: 200px; }
+#chover.ok h2 { color: #7dffb0; }
+
+/* Ekran ładowania */
+.gload, .gtip, .gbar { display: none; }
+.gate[data-state="loading"] .gatelogo { display: none; }
+.gate[data-state="loading"] .gload { display: block; }
+.gate[data-state="loading"] .gtip { display: block; }
+.gate[data-state="loading"] .gbar { display: block; }
+.gate[data-state="loading"] p { font-size: 0.82rem; color: var(--muted); min-height: 0; }
+.gate[data-state="loading"] h1 { letter-spacing: 0.01em; }
+.gload { position: relative; width: 132px; height: 132px; }
+.gload .gt { position: absolute; width: 58px; height: 58px; border-radius: 15px; display: grid; place-items: center; font: 800 1.35rem var(--num); color: #fff; font-style: normal; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18); }
+.gload .t1 { left: 0; top: 0; background: #ffc83d; color: #4a3500; animation: gl1 3.2s ease-in-out infinite; }
+.gload .t2 { right: 0; top: 0; background: #2ecc71; animation: gl2 3.2s ease-in-out infinite; }
+.gload .t3 { left: 0; bottom: 0; background: #e0408f; animation: gl3 3.2s ease-in-out infinite; }
+.gload .t4 { right: 0; bottom: 0; background: #4fc9e8; color: #08343f; animation: gl4 3.2s ease-in-out infinite; }
+.gload .tm { left: 25px; top: 25px; width: 82px; height: 82px; border-radius: 20px; font-size: 1.9rem; background: linear-gradient(135deg, #ff7ab8, #ffc83d); color: #3a1a00; opacity: 0; animation: glm 3.2s ease-in-out infinite; }
+@keyframes gl1 { 0%, 8% { transform: translate(0, 0) scale(0.6); opacity: 0; } 18%, 48% { transform: translate(0, 0) scale(1); opacity: 1; } 62%, 100% { transform: translate(37px, 37px) scale(0.7); opacity: 0; } }
+@keyframes gl2 { 0%, 12% { transform: translate(0, 0) scale(0.6); opacity: 0; } 22%, 48% { transform: translate(0, 0) scale(1); opacity: 1; } 62%, 100% { transform: translate(-37px, 37px) scale(0.7); opacity: 0; } }
+@keyframes gl3 { 0%, 16% { transform: translate(0, 0) scale(0.6); opacity: 0; } 26%, 48% { transform: translate(0, 0) scale(1); opacity: 1; } 62%, 100% { transform: translate(37px, -37px) scale(0.7); opacity: 0; } }
+@keyframes gl4 { 0%, 20% { transform: translate(0, 0) scale(0.6); opacity: 0; } 30%, 48% { transform: translate(0, 0) scale(1); opacity: 1; } 62%, 100% { transform: translate(-37px, -37px) scale(0.7); opacity: 0; } }
+@keyframes glm { 0%, 58% { transform: scale(0.4); opacity: 0; } 68% { transform: scale(1.15); opacity: 1; } 76%, 92% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.9); opacity: 0; } }
+.gbar { width: 100%; max-width: 220px; height: 6px; border-radius: 3px; background: var(--panel2); overflow: hidden; position: relative; }
+.gbar i { position: absolute; top: 0; bottom: 0; width: 40%; border-radius: 3px; background: linear-gradient(90deg, #ffc83d, #e0408f, #4fc9e8); animation: gbar 1.3s ease-in-out infinite; }
+@keyframes gbar { 0% { left: -40%; } 100% { left: 100%; } }
+.gtip { font-size: 0.86rem; line-height: 1.45; color: var(--fg); min-height: 3.2em; max-width: 300px; transition: opacity 0.35s; }
+.gtip small { display: block; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; color: var(--muted); margin-bottom: 3px; }
+.gtip.fade { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .gload .gt, .gbar i { animation: none; } .gload .tm { opacity: 0; } .gload .gt { opacity: 1; } }
 </style>
 
 </head><body>
@@ -402,6 +467,12 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     <div class="board" id="board">
       <svg class="path" viewBox="0 0 5 8" preserveAspectRatio="none" aria-hidden="true"><polyline id="line" points=""></polyline></svg>
       <div class="toasts" id="toasts"></div>
+      <div class="over" id="chover" hidden>
+        <h2 id="chovtitle"></h2>
+        <p id="chovtext"></p>
+        <button class="btn" id="chovmain" type="button"></button>
+        <button class="btn ghost" id="chovback" type="button">Do wyzwań</button>
+      </div>
       <div class="over" id="over" hidden>
         <h2>Koniec ruchów</h2>
         <p>Twój wynik<b id="finalscore">0</b></p>
@@ -428,6 +499,10 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       <span class="pi neutral"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span>
       Menu
     </button>
+    <button class="pu" id="chexit" type="button">
+      <span class="pi neutral"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/></svg></span>
+      Wyjdź
+    </button>
   </div>
 </div>
 
@@ -447,6 +522,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
           <svg class="mchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
         </button>
         <div class="mgrid">
+          <button class="mtile wide" type="button" data-go="challenges"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg></span><span class="mtxt2"><b>Wyzwania</b><small id="msch"></small></span></button>
           <button class="mtile" type="button" data-go="goals"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span><b>Cele</b><small id="msgoals"></small></button>
           <button class="mtile" type="button" data-go="rank"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8v5a4 4 0 01-8 0z"/><path d="M8 6H4v1a3 3 0 003 3M16 6h4v1a3 3 0 01-3 3M12 13v4M8 20h8"/></svg></span><b>Ranking</b><small>Gracze i moje wyniki</small></button>
           <button class="mtile" type="button" data-go="themes"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a3 3 0 003-3c0-6-4-11-8-11z"/></svg></span><b>Motywy</b><small id="msthemes"></small></button>
@@ -475,6 +551,12 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         <div class="chips two" id="statsline"></div>
         <div class="sh">Ranking</div>
         <div class="row" id="rankrow" hidden><span>Pokaż mnie w rankingu graczy</span><button class="switch" id="rankswitch" type="button" aria-label="Pokaż mnie w rankingu"><i></i></button></div>
+      </section>
+
+      <section class="pane" data-pane="challenges" hidden>
+        <div class="sh">Serie wyzwań</div>
+        <p class="chnote">Wyzwania to osobne plansze z własnymi zasadami. Nie zmieniają rekordu, rankingu ani Twojej trwającej gry. Nagrodę dostajesz tylko za pierwsze ukończenie.</p>
+        <div class="chlist" id="chlist"></div>
       </section>
 
       <section class="pane" data-pane="goals" hidden>
@@ -522,6 +604,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         </ol>
         <div class="sh">Zasady szczegółowo</div>
         <details><summary>Łączenie i punkty</summary><p>Po puszczeniu łańcuch zamienia się w jeden kafelek, którego wartość to suma zaokrąglona w górę do potęgi dwójki. Na końcu łańcucha możesz dodać kafelek dwa razy większy, jeśli dotychczasowa suma jest mu równa lub większa. Cofnij się o jeden kafelek, żeby skrócić łańcuch. Łańcuchy od trzech kafelków dają mnożnik punktów.</p></details>
+        <details><summary>Wyzwania</summary><p>W menu znajdziesz serie wyzwań: osobne plansze z zadaniem, czasem z limitem ruchów. Ukończ co najmniej 4 wyzwania z serii, aby odblokować kolejną. Za pierwsze ukończenie dostajesz monety, a za całą serię bonus. Wyzwania nie zmieniają rekordu ani trwającej gry, a narzędzia w nich nie działają. Możesz w każdej chwili wyjść i wrócić do zadania później.</p></details>
         <details><summary>Monety i narzędzia</summary><p>Monety dostajesz za codzienne cele (odnawiają się o północy czasu polskiego) oraz za każdą nową wartość kafelka. Nagrodę za daną wartość dostajesz raz na konto, także za wartości pominięte po drodze. Wydajesz je na narzędzia i motywy. Narzędzia odblokowujesz wynikiem w bieżącej grze: Cofnij od 1000, Młotek od 3000, Przetasuj od 7500 punktów. W każdej nowej grze są znów zablokowane. Cena narzędzia rośnie o połowę przy każdym użyciu w jednej grze i wraca do początkowej w nowej grze.</p></details>
         <details><summary>Kamienie ✕</summary><p>Z czasem na planszy pojawiają się kamienie, których nie da się połączyć. Rozbijesz je młotkiem albo łańcuchem od czterech kafelków obok nich.</p></details>
         <details><summary>Koniec gry i większa plansza</summary><p>Gdy nie ma już żadnego ruchu, gra się kończy, a planszę możesz jeszcze przetasować za monety. Po 1 000 000 punktów plansza poszerza się do siedmiu kolumn, wszystkie „2” zamieniają się w „4” i do końca tej gry już się nie pojawiają. Gra zapisuje się po każdym ruchu, także przy aktualizacjach.</p></details>
@@ -547,9 +630,12 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 
 <div class="gate" id="gate" data-state="loading" data-boot="1" role="dialog" aria-modal="true" aria-labelledby="gatetitle">
   <div class="gatebox">
+    <div class="gload" aria-hidden="true"><i class="gt t1">2</i><i class="gt t2">2</i><i class="gt t3">4</i><i class="gt t4">8</i><i class="gt tm">16</i></div>
     <svg class="gatelogo" viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="7" fill="#ffc83d"/><rect x="34" y="2" width="28" height="28" rx="7" fill="#2ecc71"/><rect x="2" y="34" width="28" height="28" rx="7" fill="#e0408f"/><rect x="34" y="34" width="28" height="28" rx="7" fill="#4fc9e8"/></svg>
     <h1 id="gatetitle">Polish 2248</h1>
+    <div class="gbar" aria-hidden="true"><i></i></div>
     <p id="gatemsg" aria-live="polite">Łączę z kontem Google…</p>
+    <div class="gtip" id="gatetip" aria-hidden="true"><small>Wskazówka</small><span id="gatetiptxt"></span></div>
     <button class="btn wide" id="gatebtn" type="button" hidden>Zaloguj przez Google</button>
     <small>Wynik, rekordy i postęp są zapisywane osobno dla każdego konta Google.</small>
   </div>
@@ -633,6 +719,62 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     var out = [], top = v >= 2 ? Math.min(200, Math.floor(Math.log2(v) + 1e-9)) : 0;
     for (var k = REW_MIN_EXP; k <= top; k++) out.push(k);
     return out;
+  }
+
+  /* Wyzwania: serie zadań o rosnącej trudności. Każde wyzwanie to osobna plansza 5×8.
+     type: tile | score | merges | chain; moves: limit ruchów (null = bez limitu); sp: zakres wykładników kafelków na starcie i przy dosypywaniu
+     (np. [3, 6] = od 8 do 64); d: poziom trudności 1-4; r: nagroda w monetach (raz na konto). */
+  var CH_SERIES = [
+    { id: 's1', name: 'Rozgrzewka', desc: 'Krótkie zadania na zwykłej planszy. Dobry początek.', bonus: 50, list: [
+      { id: 's1c1', type: 'chain', n: 8, moves: 15, d: 1, r: 20 },
+      { id: 's1c2', type: 'merges', n: 40, moves: null, d: 1, r: 20 },
+      { id: 's1c3', type: 'tile', n: 256, moves: 15, d: 1, r: 25 },
+      { id: 's1c4', type: 'score', n: 3000, moves: 20, d: 2, r: 35 },
+      { id: 's1c5', type: 'chain', n: 12, moves: 10, d: 2, r: 40 }
+    ] },
+    { id: 's2', name: 'Pod presją', desc: 'Mniej ruchów, większe cele.', bonus: 100, list: [
+      { id: 's2c1', type: 'tile', n: 512, moves: 20, d: 2, r: 50 },
+      { id: 's2c2', type: 'score', n: 8000, moves: 15, d: 2, r: 60 },
+      { id: 's2c3', type: 'chain', n: 20, moves: 10, d: 3, r: 70 },
+      { id: 's2c4', type: 'tile', n: 1024, moves: 15, d: 3, r: 90 },
+      { id: 's2c5', type: 'merges', n: 100, moves: null, d: 2, r: 60 }
+    ] },
+    { id: 's3', name: 'Giganci', desc: 'Wielkie kafelki i długie łańcuchy. Trzeba planować.', bonus: 200, list: [
+      { id: 's3c1', type: 'tile', n: 2048, moves: 30, d: 3, r: 120 },
+      { id: 's3c2', type: 'score', n: 15000, moves: 20, d: 3, r: 130 },
+      { id: 's3c3', type: 'chain', n: 24, moves: 10, d: 4, r: 150 },
+      { id: 's3c4', type: 'tile', n: 2048, moves: 15, d: 4, r: 180 },
+      { id: 's3c5', type: 'tile', n: 4096, moves: 30, sp: [2, 5], d: 4, r: 200 }
+    ] },
+    { id: 's4', name: 'Mistrzostwo', desc: 'Plansze z dużymi kafelkami od startu i bardzo mało ruchów.', bonus: 400, list: [
+      { id: 's4c1', type: 'tile', n: 4096, moves: 20, sp: [3, 6], d: 4, r: 250 },
+      { id: 's4c2', type: 'chain', n: 26, moves: 15, d: 4, r: 250 },
+      { id: 's4c3', type: 'score', n: 60000, moves: 20, sp: [3, 6], d: 4, r: 300 },
+      { id: 's4c4', type: 'tile', n: 8192, moves: 30, sp: [3, 6], d: 4, r: 350 },
+      { id: 's4c5', type: 'tile', n: 4096, moves: 12, sp: [3, 6], d: 4, r: 500 }
+    ] }
+  ];
+  var CH_NEED = 4, CH_DIFF = ['', 'Łatwe', 'Średnie', 'Trudne', 'Ekspert'], CH_TOTAL = 0;
+  CH_SERIES.forEach(function (sr) { CH_TOTAL += sr.list.length; });
+  function sanitizeCh(o) {
+    var out = { done: {}, tries: {}, best: {}, bonus: {} };
+    if (!o || typeof o !== 'object') return out;
+    ['done', 'tries', 'best', 'bonus'].forEach(function (k) {
+      var src = o[k];
+      if (!src || typeof src !== 'object') return;
+      Object.keys(src).forEach(function (id) { if (/^[a-z0-9_]{1,20}$/.test(id) && typeof src[id] === 'number' && isFinite(src[id]) && src[id] > 0) out[k][id] = src[id]; });
+    });
+    return out;
+  }
+  /* Zapisana, niedokończona próba wyzwania: plansza 5×8 z samymi potęgami dwójki */
+  function sanitizeRun(o) {
+    if (!o || typeof o !== 'object' || typeof o.id !== 'string' || !Array.isArray(o.vals) || o.vals.length !== 8) return null;
+    for (var r = 0; r < 8; r++) {
+      var row = o.vals[r];
+      if (!Array.isArray(row) || row.length !== 5) return null;
+      for (var c = 0; c < 5; c++) { var v = row[c]; if (typeof v !== 'number' || v < 2 || (v & (v - 1)) !== 0 || v > 4294967296) return null; }
+    }
+    return { id: o.id, vals: o.vals.map(function (row) { return row.slice(); }), score: nonNeg(o.score), moves: nonNeg(o.moves), merges: nonNeg(o.merges), longest: nonNeg(o.longest), maxTile: nonNeg(o.maxTile), v: 3 };
   }
   var ICONS = {
     tile: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>',
@@ -852,7 +994,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     return o;
   }
   function loadStore() {
-    var d = { coins: 20, done: [], bestTile: 0, longest: 0, merges: 0, best: 0, sound: true, ts: 0, nick: '', inRank: true, saved: null, unl: [], scores: [], owned: ['rainbow'], palette: 'rainbow', mode: null, avatar: '🙂', avColor: '#5b4bd8', avPhoto: false, seen: false, daily: null, tileRw: null };
+    var d = { coins: 20, done: [], bestTile: 0, longest: 0, merges: 0, best: 0, sound: true, ts: 0, nick: '', inRank: true, saved: null, unl: [], scores: [], owned: ['rainbow'], palette: 'rainbow', mode: null, avatar: '🙂', avColor: '#5b4bd8', avPhoto: false, seen: false, daily: null, tileRw: null, ch: null, chRun: null };
     try {
       var raw = storeKey && localStorage.getItem(storeKey), o = null;
       if (raw) o = JSON.parse(raw);
@@ -867,6 +1009,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     ['done', 'unl', 'owned', 'scores'].forEach(function (k) { if (!Array.isArray(d[k])) d[k] = k === 'owned' ? ['rainbow'] : []; });
     ['coins', 'best', 'bestTile', 'longest', 'merges', 'ts'].forEach(function (k) { if (typeof d[k] !== 'number' || !isFinite(d[k]) || d[k] < 0) d[k] = k === 'coins' ? 20 : 0; });
     d.daily = sanitizeDaily(d.daily);
+    d.ch = sanitizeCh(d.ch); d.chRun = sanitizeRun(d.chRun);
     /* zapis sprzed nagród za pominięte wartości: wszystko do dotychczasowego rekordu kafelka uznajemy za już odebrane */
     if (!Array.isArray(d.tileRw)) d.tileRw = tileExpsUpTo(d.bestTile);
     d.tileRw = d.tileRw.filter(function (k, i, a) { return typeof k === 'number' && k >= REW_MIN_EXP && k <= 200 && a.indexOf(k) === i; });
@@ -1023,7 +1166,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 
   function spawnRange(maxV) { var hi = Math.max(3, Math.round(Math.log2(maxV)) - 3); return [1, Math.min(7, hi + 1)]; }
   function randomValue(maxV) {
-    var rg = spawnRange(maxV).slice(), total = 0, ws = [], i;
+    var rg = (ch && ch.c.sp ? ch.c.sp : spawnRange(maxV)).slice(), total = 0, ws = [], i;
     if (COLS >= 7) rg[0] = Math.max(rg[0], 2); /* po 1 000 000 pkt nie pojawiają się już "2" */
     for (i = rg[0]; i <= rg[1]; i++) { var w = Math.pow(0.62, i - rg[0]); ws.push(w); total += w; }
     var r = Math.random() * total;
@@ -1169,6 +1312,12 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     resetRound();
   }
   function saveGame() {
+    if (ch) {
+      /* w wyzwaniu zapisujemy tylko jego własną próbę; trwająca zwykła gra (S.saved) zostaje nietknięta */
+      S.chRun = ch.ended ? null : { id: ch.c.id, vals: vals(), score: score, moves: moves, merges: ch.merges, longest: ch.longest, maxTile: ch.maxTile, v: DATA_VER };
+      save();
+      return;
+    }
     S.saved = over ? null : { vals: vals(), score: score, maxEver: maxEver, moves: moves, gl: gameLongest, uses: uses, unl: gUnl, v: DATA_VER };
     save();
   }
@@ -1374,6 +1523,177 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     renderStats();
   }
 
+  /* ---------- wyzwania ---------- */
+  var ch = null; /* trwające wyzwanie: { c: definicja, merges, longest, maxTile, ended } albo null w zwykłej grze */
+  var chovEl = $('chover'), chovTitle = $('chovtitle'), chovText = $('chovtext'), chovMain = $('chovmain'), chovAct = null;
+  function chDef(id) {
+    for (var i = 0; i < CH_SERIES.length; i++) for (var j = 0; j < CH_SERIES[i].list.length; j++) if (CH_SERIES[i].list[j].id === id) return CH_SERIES[i].list[j];
+    return null;
+  }
+  function chSeriesOf(id) { return CH_SERIES.filter(function (sr) { return sr.list.some(function (c) { return c.id === id; }); })[0] || null; }
+  function chDoneIn(sr) { return sr.list.filter(function (c) { return S.ch.done[c.id]; }).length; }
+  function chDoneCount() { return CH_SERIES.reduce(function (a, sr) { return a + chDoneIn(sr); }, 0); }
+  function chUnlocked(i) { return i === 0 || chDoneIn(CH_SERIES[i - 1]) >= CH_NEED; }
+  function chText(c) {
+    switch (c.type) {
+      case 'tile': return 'Osiągnij kafelek ' + c.n;
+      case 'score': return 'Zdobądź ' + c.n.toLocaleString('pl-PL') + ' punktów';
+      case 'merges': return 'Wykonaj ' + c.n + ' połączeń';
+      default: return 'Połącz łańcuch z ' + c.n + ' kafelków';
+    }
+  }
+  function chShort(c) {
+    switch (c.type) {
+      case 'tile': return 'Kafelek ' + c.n;
+      case 'score': return c.n.toLocaleString('pl-PL') + ' pkt';
+      case 'merges': return c.n + ' połączeń';
+      default: return 'Łańcuch ×' + c.n;
+    }
+  }
+  function chProg(c) {
+    switch (c.type) {
+      case 'tile': return ch.maxTile;
+      case 'score': return score;
+      case 'merges': return ch.merges;
+      default: return ch.longest;
+    }
+  }
+  /* pasek „Ruchy” zamiast rekordu, gdy trwa wyzwanie (rekord wraca po wyjściu) */
+  function chHud() {
+    var lbl = bestEl.previousElementSibling;
+    if (ch) { lbl.textContent = 'Ruchy'; fit(bestEl, ch.c.moves ? moves + ' / ' + ch.c.moves : String(moves)); }
+    else { lbl.textContent = 'Rekord'; fit(bestEl, fmtS(S.best)); }
+  }
+  function chAfterMove() {
+    var c = ch.c;
+    chHud(); renderHint();
+    if (chProg(c) >= c.n) return { ok: true };
+    if (c.moves && moves >= c.moves) return { ok: false, why: 'Wykorzystano wszystkie ' + c.moves + ' ruchów.' };
+    return null;
+  }
+  function chResetEngine() {
+    window.__pend.forEach(clearTimeout); window.__pend = [];
+    cancelAnimationFrame(tweenId);
+    appEl.classList.remove('expanding'); boardEl.classList.remove('grow');
+    resetToasts();
+  }
+  function chStart(id, resume) {
+    var c = chDef(id);
+    if (!c) return;
+    if (busy) { setTimeout(function () { chStart(id, resume); }, 300); return; }
+    /* zwykła gra (S.saved) jest zapisywana po każdym ruchu, więc jej tu nie dotykamy */
+    chResetEngine();
+    setCols(5, true);
+    var run = (resume && S.chRun && S.chRun.id === id) ? S.chRun : null, vs;
+    ch = { c: c, merges: run ? run.merges : 0, longest: run ? run.longest : 0, maxTile: run ? run.maxTile : 0, ended: false };
+    if (run) { vs = run.vals; score = run.score; moves = run.moves; }
+    else {
+      do {
+        vs = [];
+        for (var r = 0; r < ROWS; r++) { var row = []; for (var cc = 0; cc < COLS; cc++) row.push(randomValue(8)); vs.push(row); }
+      } while (!movesIn(vs));
+      score = 0; moves = 0;
+      S.ch.tries[id] = (S.ch.tries[id] || 0) + 1;
+    }
+    buildFrom(vs, !run);
+    snap = null; gameLongest = ch.longest; uses = { undo: 0, hammer: 0, shuffle: 0 }; gUnl = []; stoneDue = false; maxEver = maxValue();
+    document.body.classList.add('chmode');
+    chovEl.hidden = true;
+    svgEl.style.opacity = 1;
+    resetRound();
+    chHud();
+    saveGame();
+  }
+  function chLeave() {
+    if (!ch) return;
+    if (busy) { setTimeout(chLeave, 300); return; }
+    saveGame(); /* niedokończona próba zostaje w S.chRun, a po zakończeniu jest już wyczyszczona */
+    chResetEngine();
+    ch = null;
+    document.body.classList.remove('chmode');
+    chovEl.hidden = true;
+    score = 0; over = true; /* nic z wyzwania nie może trafić do listy wyników */
+    if (validSaved(S.saved)) resume(S.saved); else newGame();
+    chHud();
+  }
+  function chShowOver(ok, title, text, mainLabel, mainFn) {
+    chovEl.className = 'over' + (ok ? ' ok' : '');
+    chovTitle.textContent = title; chovText.textContent = text;
+    chovMain.textContent = mainLabel; chovAct = mainFn;
+    chovEl.hidden = false;
+  }
+  function chNextAfter(id) {
+    for (var i = 0; i < CH_SERIES.length; i++) {
+      if (!chUnlocked(i)) break;
+      for (var j = 0; j < CH_SERIES[i].list.length; j++) {
+        var c = CH_SERIES[i].list[j];
+        if (!S.ch.done[c.id] && c.id !== id) return c;
+      }
+    }
+    return null;
+  }
+  function chFinishRun(res) {
+    if (!ch) return;
+    var c = ch.c, id = c.id, text, bonusAmt = 0;
+    ch.ended = true; busy = false; over = true; /* plansza zablokowana pod nakładką; następny start wyczyści te znaczniki */
+    if (res.ok) {
+      var first = !S.ch.done[id];
+      if (first) {
+        S.ch.done[id] = Date.now(); /* znacznik ukończenia najpierw, potem monety: nagroda tylko raz */
+        S.coins += c.r;
+        var sr = chSeriesOf(id);
+        if (sr && chDoneIn(sr) === sr.list.length && !S.ch.bonus[sr.id]) { S.ch.bonus[sr.id] = Date.now(); S.coins += sr.bonus; bonusAmt = sr.bonus; }
+      }
+      if (!S.ch.best[id] || moves < S.ch.best[id]) S.ch.best[id] = Math.max(1, moves);
+      S.chRun = null;
+      save(); setCoins();
+      text = first ? 'Nagroda: +' + c.r + ' monet' + (bonusAmt ? '. Cała seria ukończona: bonus +' + bonusAmt + ' monet!' : '.') : 'To wyzwanie było już ukończone, więc nagroda nie jest przyznawana ponownie.';
+      var nx = chNextAfter(id);
+      chShowOver(true, 'Wyzwanie ukończone!', text, nx ? 'Następne wyzwanie' : 'Do wyzwań', nx ? function () { chStart(nx.id); } : function () { chLeave(); openSheet('challenges'); });
+      play('record');
+    } else {
+      S.chRun = null;
+      save();
+      chShowOver(false, 'Nie udało się', res.why, 'Spróbuj ponownie', function () { chStart(id); });
+      play('over');
+    }
+  }
+  chovMain.addEventListener('click', function () { if (chovAct) chovAct(); });
+  $('chovback').addEventListener('click', function () { chLeave(); openSheet('challenges'); });
+  $('chexit').addEventListener('click', function () { chLeave(); });
+
+  var chlistEl = $('chlist');
+  function renderChallenges() {
+    var html = '';
+    CH_SERIES.forEach(function (sr, i) {
+      var open = chUnlocked(i), dn = chDoneIn(sr), full = dn === sr.list.length;
+      html += '<div class="chser' + (open ? '' : ' locked') + '"><div class="chtop"><b>Seria ' + (i + 1) + ': ' + sr.name + '</b><span class="chcount' + (full ? ' full' : '') + '">' + (full ? '✓ ' : '') + dn + ' / ' + sr.list.length + '</span></div><p class="chdesc">' + sr.desc + '</p>';
+      if (!open) html += '<p class="chlock">🔒 Ukończ co najmniej ' + CH_NEED + ' wyzwania z serii ' + i + ' (' + CH_SERIES[i - 1].name + '), aby odblokować.</p>';
+      html += '<p class="chbonus">Bonus za całą serię: <b>+' + sr.bonus + '</b> monet' + (S.ch.bonus[sr.id] ? ' · <b>odebrany ✓</b>' : '') + '</p>';
+      sr.list.forEach(function (c) {
+        var done = !!S.ch.done[c.id], running = !!(S.chRun && S.chRun.id === c.id), info = [];
+        info.push(c.moves ? 'Maksymalnie ' + c.moves + ' ruchów' : 'Bez limitu ruchów');
+        if (c.sp) info.push('duże kafelki na starcie');
+        if (S.ch.tries[c.id]) info.push('próby: ' + S.ch.tries[c.id]);
+        if (S.ch.best[c.id]) info.push('najlepiej: ' + S.ch.best[c.id] + ' ruchów');
+        html += '<div class="chrow' + (done ? ' done' : '') + '"><div class="chtxt"><span class="chd d' + c.d + '">' + CH_DIFF[c.d] + '</span><b>' + chText(c) + '</b><small>' + info.join(' · ') + '</small></div><div class="chact">' +
+          (done ? '<span class="chok">✓ Ukończone</span>' : '<span class="rw">+' + c.r + '<i class="coin"></i></span>') +
+          (open ? '<button class="chbtn' + (done ? ' sec' : '') + '" type="button" data-ch="' + c.id + '"' + (running ? ' data-resume="1"' : '') + '>' + (running ? 'Kontynuuj' : done ? 'Zagraj ponownie' : 'Start') + '</button>' : '') +
+          '</div></div>';
+      });
+      html += '</div>';
+    });
+    chlistEl.innerHTML = html;
+  }
+  chlistEl.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('[data-ch]') : null;
+    if (!b) return;
+    var id = b.getAttribute('data-ch'), sr = chSeriesOf(id), i = CH_SERIES.indexOf(sr);
+    if (!chDef(id) || !chUnlocked(i)) return;
+    closeSheet();
+    chStart(id, b.getAttribute('data-resume') === '1');
+  });
+
   var nowEl = $('nowline'), toolsEl = $('toolsprog');
   function chipH(b, t) { return '<div class="chip"><b>' + b + '</b><small>' + t + '</small></div>'; }
   function renderStats() {
@@ -1386,6 +1706,13 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     }).join('');
   }
   function renderHint() {
+    if (ch) {
+      var cp = Math.min(chProg(ch.c), ch.c.n);
+      goalTextEl.textContent = chShort(ch.c) + ' · ' + cp + '/' + ch.c.n;
+      miniBar.style.width = (cp / ch.c.n * 100) + '%';
+      miniWrap.hidden = false;
+      return;
+    }
     if (hammer) {
       goalTextEl.textContent = 'Dotknij kafelka, który chcesz usunąć';
       miniWrap.hidden = true;
@@ -1417,7 +1744,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     });
     btnHammer.classList.toggle('on', hammer);
     rescueBtn.innerHTML = 'Przetasuj za ' + cost('shuffle') + ' <i class="coin"></i>';
-    rescueBtn.hidden = !(over && S.coins >= cost('shuffle') && !isLocked('shuffle'));
+    rescueBtn.hidden = !(over && !ch && S.coins >= cost('shuffle') && !isLocked('shuffle'));
   }
   function checkUnlocks(silent) {
     Object.keys(UNLOCK).forEach(function (id) {
@@ -1625,7 +1952,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     var removed = chain.slice(0, -1);
     var gain = Math.round(target * mult(n));
     snap = { vals: vals(), score: score };
-    moves++; stoneDue = Math.random() < Math.min(0.7, 0.04 + moves / 250);
+    moves++; stoneDue = !ch && Math.random() < Math.min(0.7, 0.04 + moves / 250);
     if (n >= 4) crackStones(chain);
     var isRecord = target > maxEver;
     var retire = 0;
@@ -1664,26 +1991,33 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       score += gain;
       updateScore();
       bumpEl(scoreEl, 'bump', 220);
-      S.merges++;
-      if (n > S.longest) S.longest = n;
       if (n > gameLongest) gameLongest = n;
-      if (target > S.bestTile) S.bestTile = target;
-      dayAdd(n, target, gain);
-      if (score > S.best) { S.best = score; fit(bestEl, fmtS(S.best)); }
+      if (ch) {
+        /* wyzwanie: liczymy tylko postęp wyzwania, nic z tego nie trafia do rekordów, celów dziennych ani nagród za kafelki */
+        ch.merges++;
+        if (n > ch.longest) ch.longest = n;
+        if (target > ch.maxTile) ch.maxTile = target;
+      } else {
+        S.merges++;
+        if (n > S.longest) S.longest = n;
+        if (target > S.bestTile) S.bestTile = target;
+        dayAdd(n, target, gain);
+        if (score > S.best) { S.best = score; fit(bestEl, fmtS(S.best)); }
+      }
       floatText(last, '+' + fmtS(gain), n >= 3);
       var col = colorsFor(target);
       var big = isRecord && !reduce;
       /* Nagroda za każdą jeszcze nieodebraną wartość do osiągniętej włącznie (także pominiętą); każda wartość tylko raz na konto. */
-      var newVals = claimTiles(target);
+      var newVals = ch ? [] : claimTiles(target);
       if (newVals.length) {
         var bonus = 0;
         newVals.forEach(function (v) { bonus += Math.round(Math.log2(v)) * 2; });
         toast(newVals.length === 1 ? 'Nowa największa wartość: ' + fmtT(newVals[0]) : 'Nowe wartości: ' + (newVals.length <= 4 ? newVals.map(fmtT).join(', ') : fmtT(newVals[0]) + ' … ' + fmtT(newVals[newVals.length - 1]) + ' (' + newVals.length + ')'), 'gold', 2300, bonus);
         addCoins(bonus);
-      } else if (isRecord) {
+      } else if (isRecord && !ch) {
         toast('Nowa największa wartość: ' + fmtT(target), 'gold', 2300);
       }
-      if (isRecord && retire) setTimeout(function () { retireToast(retire); }, 800);
+      if (isRecord && retire && !ch) setTimeout(function () { retireToast(retire); }, 800);
       if (big) {
         bumpEl(last.el, 'legend', 1400);
         burstAt(last, { ring: '#ffd666', colors: ['#ffd666', '#ffb02e', '#fff3c4', '#ff7ab8'], n: 18, dist: [22, 38] });
@@ -1694,10 +2028,16 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
         burstAt(last, { ring: col.c1, colors: [col.c1, col.c2, '#ffffff'], n: n >= 4 ? Math.min(14, n * 2) : 0, dist: [12, 24], soft: true });
         play('merge', n);
       }
-      checkUnlocks();
-      checkGoals();
-      renderStats();
-      if (COLS === 5 && score >= EXPAND_AT) setTimeout(function () { expandBoard(settle); }, 500);
+      if (ch) {
+        var res = chAfterMove();
+        renderStats();
+        if (res) { ch.ended = true; setTimeout(function () { chFinishRun(res); }, 750); return; }
+      } else {
+        checkUnlocks();
+        checkGoals();
+        renderStats();
+      }
+      if (COLS === 5 && score >= EXPAND_AT && !ch) setTimeout(function () { expandBoard(settle); }, 500);
       else setTimeout(settle, big ? 450 : 140);
     }, removed.length * step + flyMs + 30);
   }
@@ -1754,6 +2094,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   }
 
   function endGame() {
+    if (ch) { over = true; ch.ended = true; chFinishRun({ ok: false, why: 'Brak możliwych połączeń na planszy.' }); return; }
     over = true;
     recordScore();
     S.saved = null;
@@ -1868,7 +2209,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       ngTimer = setTimeout(function () { ngBtn.removeAttribute('data-arm'); ngLbl.textContent = 'Nowa gra'; }, 3500);
     }
   });
-  $('again').addEventListener('click', newGame);
+  $('again').addEventListener('click', function () { if (ch) chStart(ch.c.id); else newGame(); });
   btnSound.addEventListener('click', function () {
     S.sound = !S.sound;
     save();
@@ -1878,11 +2219,12 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
 
   /* ---------- menu (arkusz od dołu) ---------- */
   var sheetEl = $('sheet'), backBtn = $('backsheet'), curTab = 'home';
-  var TITLES = { home: 'Menu', profile: 'Mój profil', goals: 'Cele', rank: 'Ranking', themes: 'Motywy', settings: 'Ustawienia', help: 'Jak grać' };
+  var TITLES = { home: 'Menu', challenges: 'Wyzwania', profile: 'Mój profil', goals: 'Cele', rank: 'Ranking', themes: 'Motywy', settings: 'Ustawienia', help: 'Jak grać' };
   function renderHome() {
     setAv($('mav'), $('mav'));
     $('mname').textContent = S.nick || 'Gracz';
     $('msub').textContent = rankName() + ' · Rekord ' + fmtS(S.best);
+    $('msch').textContent = 'Ukończone: ' + chDoneCount() + ' z ' + CH_TOTAL;
     $('msgoals').textContent = 'Dziś: ' + S.daily.done.length + ' z ' + S.daily.goals.length;
     $('msthemes').textContent = 'Wygląd gry · ' + S.coins + ' monet';
     $('mssettings').textContent = 'Dźwięk, konto, instalacja';
@@ -1892,6 +2234,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     $('sheettitle').textContent = TITLES[t] || 'Menu';
     backBtn.hidden = t === 'home';
     if (t === 'home') renderHome();
+    if (t === 'challenges') renderChallenges();
     if (t === 'profile') renderProfile();
     if (t === 'rank' && !$('rankglobal').hidden && window.__cloudRank) window.__cloudRank();
     Array.prototype.forEach.call(sheetEl.querySelectorAll('[data-pane]'), function (p) { p.hidden = p.getAttribute('data-pane') !== t; });
@@ -1900,7 +2243,7 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
   function openSheet(t) { clearHint(); showTab(t || 'home'); sheetEl.hidden = false; }
   function closeSheet() { sheetEl.hidden = true; scheduleHint(); }
   $('menu').addEventListener('click', function () { openSheet('home'); });
-  hintEl.addEventListener('click', function () { openSheet('goals'); });
+  hintEl.addEventListener('click', function () { openSheet(ch ? 'challenges' : 'goals'); });
   $('coinbtn').addEventListener('click', function () { openSheet('themes'); });
   $('avbtn').addEventListener('click', function () { openSheet('profile'); });
   $('closesheet').addEventListener('click', closeSheet);
@@ -2040,6 +2383,20 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
     if (gateEl.getAttribute('data-boot') === '1') window.__gate('error', 'Łączenie trwa zbyt długo. Sprawdź internet i spróbuj ponownie.');
   }, 15000);
 
+
+  /* ekran ładowania: wskazówki zmieniają się, dopóki trwa łączenie z kontem */
+  (function () {
+    var tips = ['Łącz kafelki o tej samej wartości, także po przekątnej.', 'Im dłuższy łańcuch, tym wyższy mnożnik punktów.', 'W łańcuchu możesz dodać kafelek dwa razy większy, jeśli suma dotychczasowych kafelków mu dorównuje.', 'Cele dzienne odnawiają się o północy czasu polskiego.', 'W menu czekają Wyzwania: serie zadań coraz trudniejszych.', 'Nagrodę za nową wartość kafelka dostajesz raz na konto, także za wartości pominięte po drodze.', 'Młotek usuwa jeden kafelek, a Przetasuj ratuje zablokowaną planszę.', 'Wynik i postęp zapisują się osobno dla każdego konta Google.'];
+    var box = $('gatetip'), txt = $('gatetiptxt'), gt = $('gate'), k = Math.floor(Math.random() * tips.length);
+    if (!box || !txt) return;
+    txt.textContent = tips[k];
+    setInterval(function () {
+      if (gt.hidden || gt.getAttribute('data-state') !== 'loading') return;
+      box.classList.add('fade');
+      setTimeout(function () { k = (k + 1) % tips.length; txt.textContent = tips[k]; box.classList.remove('fade'); }, 350);
+    }, 3200);
+  })();
+
   /* ---------- most do chmury (Firebase) ---------- */
   window.__game = {
     state: function () { return S; },
@@ -2067,12 +2424,18 @@ body.th-gb { --num: "Press Start 2P", monospace; background: var(--gb-body); }
       var seen = {};
       S.scores = (S.scores || []).concat(c.scores || []).filter(function (x) { var k = x.s + '_' + x.d; if (seen[k]) return false; seen[k] = 1; return true; })
         .sort(function (a, b) { return b.s - a.s; }).slice(0, 10);
+      var cch = sanitizeCh(c.ch);
+      Object.keys(cch.done).forEach(function (k) { if (!S.ch.done[k] || cch.done[k] < S.ch.done[k]) S.ch.done[k] = cch.done[k]; });
+      Object.keys(cch.tries).forEach(function (k) { S.ch.tries[k] = Math.max(S.ch.tries[k] || 0, cch.tries[k]); });
+      Object.keys(cch.best).forEach(function (k) { if (!S.ch.best[k] || cch.best[k] < S.ch.best[k]) S.ch.best[k] = cch.best[k]; });
+      Object.keys(cch.bonus).forEach(function (k) { if (!S.ch.bonus[k] || cch.bonus[k] < S.ch.bonus[k]) S.ch.bonus[k] = cch.bonus[k]; });
+      if (newer && !ch) S.chRun = sanitizeRun(c.chRun);
       if (newer) { S.coins = c.coins; S.palette = c.palette; S.mode = c.mode; S.sound = c.sound; S.saved = c.saved; S.ts = c.ts; S.nick = c.nick || ''; S.inRank = c.inRank !== false; S.avatar = c.avatar || S.avatar; S.avColor = c.avColor || S.avColor; S.avPhoto = !!c.avPhoto; }
       window.__noStamp = true; save(); window.__noStamp = false;
       if (S.seen && !introEl.hidden) { introEl.hidden = true; scheduleHint(); }
-      applyTheme(S.palette); fit(bestEl, fmtS(S.best)); checkUnlocks(true); renderScores(); setSoundLabel(); renderGoals(); setCoins(); syncRankUI();
+      applyTheme(S.palette); fit(bestEl, fmtS(S.best)); checkUnlocks(true); renderScores(); setSoundLabel(); renderGoals(); setCoins(); syncRankUI(); chHud();
       S.saved = fixSaved(S.saved);
-      if (newer && validSaved(S.saved)) {
+      if (newer && !ch && validSaved(S.saved)) {
         window.__pend.forEach(clearTimeout); window.__pend = [];
         resetToasts(); appEl.classList.remove('expanding');
         resume(S.saved);
